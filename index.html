@@ -566,7 +566,7 @@
                                     <div key={i} draggable onDragStart={(e) => onDragStart(e, num)} onClick={() => handleSelect(num)}
                                          className={`draggable-item w-28 h-28 text-6xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_8px_0_0_rgba(0,0,0,0.6)] ${
                                              selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-400 hover:bg-slate-600'
-                                         } ${placed === num ? 'opacity-20 grayscale pointer-events-none' : ''}`}>
+                                         }`}>
                                         {num}
                                     </div>
                                 ))}
@@ -655,7 +655,7 @@
                                     <div key={i} draggable onDragStart={(e)=>onDragStart(e, num)} onClick={() => handleSelect(num)}
                                          className={`draggable-item w-28 h-28 text-6xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_8px_0_0_rgba(0,0,0,0.6)] ${
                                              selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-400 hover:bg-slate-600'
-                                         } ${placed === num ? 'opacity-20 grayscale pointer-events-none' : ''}`}>
+                                         }`}>
                                         {num}
                                     </div>
                                 ))}
@@ -742,12 +742,11 @@
                                     
                                     <div className="flex flex-wrap justify-center gap-4 mt-2 bg-slate-800/80 w-full p-6 rounded-[2rem] border-2 border-slate-600 shadow-inner">
                                         {data.pool.map((num, i) => {
-                                            const isPlaced = Object.values(placed).includes(num);
                                             return (
                                                 <div key={i} draggable onDragStart={(e)=>onDragStart(e, num)} onClick={() => handleSelect(num)}
                                                     className={`draggable-item w-20 h-20 text-4xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_6px_0_0_rgba(0,0,0,0.5)] ${
                                                         selected === num ? 'bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-500 hover:bg-slate-600'
-                                                    } ${isPlaced ? 'opacity-20 grayscale pointer-events-none' : ''}`}
+                                                    }`}
                                                 >
                                                     {num}
                                                 </div>
