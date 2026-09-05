@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TuProfe20 Lab - Fracciones e Igualdades</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-primary: #FF007A;
+            --brand-secondary: #00F0FF;
+            --brand-tertiary: #7000FF;
+            --brand-yellow: #FFE600;
+            --brand-green: #00FF66;
+            --brand-orange: #FF6B00;
+            --brand-bg: #090A0F;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--brand-bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        /* FONDO ESPACIAL: VÍA LÁCTEA SUTIL Y LIMPIA */
+        .space-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            overflow: hidden;
+        }
+        
+        .milky-way {
+            position: absolute;
+            width: 200vw; height: 200vh; top: -50vh; left: -50vw;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #dddddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #dddddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 250px 250px;
+            animation: rotateMilkyWay 400s linear infinite;
+            opacity: 0.3;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle linear infinite alternate;
+        }
+
+        @keyframes rotateMilkyWay { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes twinkle { 0% { opacity: 0.1; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #fff; } }
+
+        /* Ocultar input number spinner */
+        input[type="number"] { -moz-appearance: textfield; }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        .app-container { font-family: 'Nunito', sans-serif; width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .bouncy-hover { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .bouncy-hover:hover { transform: translateY(-5px) scale(1.05); }
+        .bouncy-hover:active { transform: translateY(2px) scale(0.95); }
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+        
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .float-anim { animation: floating 3s ease-in-out infinite; }
+        .pulse-glow { animation: pulseGlow 1.5s infinite; }
+        .wiggle { animation: wiggle 3s ease-in-out infinite; }
+        .neon-text { text-shadow: 0 0 20px currentColor, 0 0 40px currentColor; }
+
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes floating { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 10px #fff; transform: scale(1.05); border-color: #fff; } 50% { box-shadow: 0 0 30px #fff; transform: scale(1.1); border-color: var(--brand-secondary); } }
+        @keyframes wiggle { 0%, 100% { transform: rotate(0deg) translateY(0); } 25% { transform: rotate(-3deg) translateY(-10px); } 75% { transform: rotate(3deg) translateY(5px); } }
+
+        /* LAYOUT HORIZONTAL CENTRADO ABSOLUTO */
+        .horizontal-layout { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; max-width: 1400px; height: 100%; padding: 2rem; gap: 4rem; margin: 0 auto; }
+        .robot-pane { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
+        .interaction-pane { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; flex: 1; }
+
+        /* Drag & Drop */
+        .draggable-item { cursor: pointer; transition: all 0.3s ease; user-select: none; }
+        .draggable-item:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .dropzone { border: 4px dashed rgba(255,255,255,0.3); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(0,0,0,0.2); }
+        .dropzone.active { border-color: var(--brand-green); background: rgba(0, 255, 102, 0.1); animation: pulseGlow 1.5s infinite; }
+        .dropzone.filled { border-style: solid; border-color: var(--brand-secondary); background: rgba(15, 23, 42, 0.8); }
+
+        .balance-beam { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .confetti-piece { position: absolute; width: 12px; height: 24px; opacity: 0; animation: fall linear forwards; }
+        @keyframes fall { 0% { opacity: 1; top: -10%; transform: rotate(0deg); } 100% { opacity: 0; top: 110%; transform: rotate(720deg); } }
+
+        /* Scroll oculto para bloques */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        button:focus-visible, [role="button"]:focus-visible, input:focus-visible { outline: 4px solid var(--brand-yellow); outline-offset: 4px; }
+        .progress-track { height: 10px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand-primary), var(--brand-yellow)); transition: width .45s ease; box-shadow: 0 0 16px var(--brand-primary); }
+        .icon-button { width: 3.5rem; height: 3.5rem; border-radius: 1rem; display: grid; place-items: center; background: rgba(30,41,59,.9); border: 2px solid rgba(255,255,255,.18); }
+        @media (max-width: 900px) {
+            body { overflow: auto; }
+            .app-container { min-height: 100dvh; height: auto; }
+            .horizontal-layout { flex-direction: column; height: auto; min-height: 100%; padding: 1rem; gap: 1.25rem; overflow-y: auto; }
+            .robot-pane { width: 100%; max-width: 560px; }
+            .robot-pane svg { width: 86px; height: 86px; }
+            .interaction-pane { width: 100%; gap: 1rem; }
+            .interaction-pane > * { min-width: 0 !important; width: 100% !important; padding: 1.25rem !important; border-radius: 2rem !important; }
+            .glass-panel { backdrop-filter: blur(14px); }
+            .bouncy-hover:hover { transform: none; }
+        }
+        @media (max-width: 640px) {
+            .horizontal-layout { padding: .75rem; }
+            .robot-pane .glass-panel { font-size: 1rem !important; padding: 1rem !important; }
+            .dropzone { max-width: 100%; }
+            h1 { overflow-wrap: anywhere; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useRef } = React;
+
+        const IconBase = ({ children, size = 24, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+        const Play = (p) => <IconBase {...p}><polygon points="5 3 19 12 5 21 5 3"/></IconBase>;
+        const Star = (p) => <IconBase {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></IconBase>;
+        const AlertCircle = (p) => <IconBase {...p}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></IconBase>;
+        const Check = (p) => <IconBase {...p}><polyline points="20 6 9 17 4 12"/></IconBase>;
+        const ArrowLeft = (p) => <IconBase {...p}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconBase>;
+        const Info = (p) => <IconBase {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></IconBase>;
+
+        const audioCtx = typeof window !== 'undefined' ? new (window.AudioContext || window.webkitAudioContext)() : null;
+        const playTone = (freq, type, duration, vol = 0.1, sweep = false) => {
+            if (!audioCtx) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                if (sweep) {
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(freq / 2, audioCtx.currentTime + duration);
+                } else {
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                }
+                gain.gain.setValueAtTime(0, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        };
+
+        let soundEnabled = true;
+        const soundLibrary = {
+            pop: () => playTone(800, 'sine', 0.15, 0.2, true),
+            click: () => playTone(600, 'triangle', 0.05, 0.1),
+            place: () => playTone(1200, 'sine', 0.1, 0.1),
+            success: () => { playTone(523.25, 'sine', 0.15, 0.2); setTimeout(() => playTone(659.25, 'sine', 0.15, 0.2), 100); setTimeout(() => playTone(783.99, 'sine', 0.3, 0.2), 200); },
+            wrong: () => { playTone(200, 'sawtooth', 0.3, 0.2, true); setTimeout(() => playTone(150, 'sawtooth', 0.4, 0.2, true), 150); },
+            win: () => { [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((f, i) => setTimeout(() => playTone(f, 'sine', 0.3, 0.2), i * 150)); }
+        };
+        const useSound = (soundKey) => useCallback(() => { if (soundEnabled && soundLibrary[soundKey]) soundLibrary[soundKey](); }, [soundKey]);
+
+        // Componentes Generales: Fondo Galáctico Limpio
+        const DynamicBackground = () => {
+            const [stars, setStars] = useState([]);
+            useEffect(() => {
+                const s = Array.from({length: 150}).map((_, i) => ({
+                    id: i, left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`,
+                    size: `${Math.random() * 3 + 1}px`, animDuration: `${2 + Math.random() * 5}s`, animDelay: `-${Math.random() * 5}s`
+                }));
+                setStars(s);
+            }, []);
+            return (
+                <div className="space-bg">
+                    <div className="milky-way"></div>
+                    {stars.map(s => <div key={`s-${s.id}`} className="star" style={{left: s.left, top: s.top, width: s.size, height: s.size, animationDuration: s.animDuration, animationDelay: s.animDelay}}></div>)}
+                </div>
+            );
+        };
+
+        const AnimatedRobot = ({ size = 100, className = '' }) => (
+            <svg width={size} height={size} viewBox="0 0 100 100" className={`overflow-visible float-anim ${className}`} xmlns="http://www.w3.org/2000/svg">
+                <line x1="50" y1="25" x2="50" y2="10" stroke="#94A3B8" strokeWidth="4" strokeLinecap="round" />
+                <circle cx="50" cy="8" r="5" fill="var(--brand-primary)" className="animate-pulse" />
+                <rect x="15" y="25" width="70" height="55" rx="20" fill="#1E293B" stroke="var(--brand-secondary)" strokeWidth="4" filter="drop-shadow(0 0 10px var(--brand-secondary))" />
+                <rect x="25" y="32" width="50" height="35" rx="12" fill="#0F172A" />
+                <circle cx="37" cy="45" r="6" fill="var(--brand-yellow)" />
+                <circle cx="63" cy="45" r="6" fill="var(--brand-yellow)" />
+                <path d="M 42 56 Q 50 62 58 56" stroke="var(--brand-green)" strokeWidth="3" fill="none" strokeLinecap="round" />
+            </svg>
+        );
+
+        const RobotGuide = ({ text, children }) => (
+            <div className="flex flex-col items-center gap-6 w-full relative">
+                <div className="relative bg-slate-900/80 backdrop-blur-md p-4 rounded-[3rem] border-4 border-[var(--brand-secondary)] shadow-[0_0_30px_rgba(0,240,255,0.4)]">
+                    <AnimatedRobot size={150} />
+                </div>
+                <div className="glass-panel text-white p-6 rounded-3xl rounded-tl-none border-t-4 border-[var(--brand-tertiary)] font-bold text-xl relative pop-in text-center leading-relaxed w-full shadow-2xl flex flex-col items-center gap-4">
+                    {text}
+                    {children}
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-b-[18px] border-b-[var(--brand-tertiary)] border-r-[12px] border-r-transparent"></div>
+                </div>
+            </div>
+        );
+
+        const Button = ({ children, onClick, variant = 'primary', className = '' }) => {
+            const playClick = useSound('click');
+            const variants = { primary: "bg-gradient-to-r from-[var(--brand-primary)] to-[#ff4d94] shadow-[0_6px_0_0_#990049] hover:brightness-110 text-white border-none", secondary: "bg-gradient-to-r from-[var(--brand-secondary)] to-[#66f5ff] shadow-[0_6px_0_0_#009999] hover:brightness-110 text-slate-900" };
+            return <button type="button" onClick={(e) => { playClick(); if(onClick) onClick(e); }} className={`bouncy-hover font-black py-4 px-10 rounded-full text-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-wider border-2 border-white/20 ${variants[variant]} ${className}`}>{children}</button>;
+        };
+
+        const FractionDisplay = ({ num, den }) => (
+            <div className="flex flex-col items-center justify-center font-black text-white">
+                <span className="text-6xl border-b-4 border-white pb-1 px-4">{num}</span>
+                <span className="text-6xl pt-1 px-4">{den}</span>
+            </div>
+        );
+
+        const FractionGraphic = ({ n, d, theme = 'default' }) => {
+            const wholes = Math.ceil(n / d) || 1;
+            const getThemeColors = () => {
+                if(theme === 'chocolate') return { bg: 'bg-[#3E2723]', fill: 'bg-[#5D4037]', border: 'border-[#1b100e]' };
+                if(theme === 'pizza') return { bg: 'bg-orange-200', fill: 'bg-yellow-400', border: 'border-orange-500' };
+                return { bg: 'bg-slate-800', fill: 'bg-[var(--brand-secondary)]', border: 'border-slate-500' };
+            };
+            const colors = getThemeColors();
+
+            return (
+                <div className="flex flex-wrap gap-4 justify-center items-center">
+                    {Array.from({length: wholes}).map((_, wIdx) => (
+                        <div key={wIdx} className={`flex border-4 ${colors.border} rounded-xl overflow-hidden ${colors.bg} shadow-lg`}>
+                            {Array.from({length: d}).map((_, dIdx) => {
+                                const isShaded = (wIdx * d) + dIdx < n;
+                                return <div key={dIdx} className={`w-8 h-12 border-r-2 ${colors.border} last:border-r-0 ${isShaded ? colors.fill : ''}`}></div>;
+                            })}
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        const Confetti = () => {
+            const [pieces, setPieces] = useState([]);
+            useEffect(() => {
+                const colors = ['#FF007A', '#00F0FF', '#FFE600', '#7000FF', '#00FF66'];
+                setPieces(Array.from({ length: 80 }).map((_, i) => ({ id: i, left: `${Math.random() * 100}%`, animationDuration: `${Math.random() * 2 + 1}s`, animationDelay: `${Math.random() * 0.5}s`, backgroundColor: colors[Math.floor(Math.random() * colors.length)], transform: `rotate(${Math.random() * 360}deg)` })));
+            }, []);
+            return <div className="absolute inset-0 overflow-hidden pointer-events-none z-[100]">{pieces.map(p => <div key={p.id} className="confetti-piece rounded-sm" style={p} />)}</div>;
+        };
+
+
+        // --- BLOQUE 1: Clasificar con Gráficos y Etiquetas ---
+        const ActClassifyGraphic = ({ data, onComplete, onError }) => {
+            const [selected, setSelected] = useState(null);
+            const [placed, setPlaced] = useState(null);
+            const playPop = useSound('pop');
+            const playPlace = useSound('place');
+
+            const handleSelect = (sym) => { playPop(); setSelected(sym); };
+            const handleDrop = () => { if (selected) { playPlace(); setPlaced(selected); setSelected(null); } };
+            const handleRemove = (e) => { e.stopPropagation(); playPop(); setPlaced(null); };
+
+            const check = () => {
+                if (!placed) { onError("Arrastra una etiqueta a la caja punteada."); return; }
+                if (placed === data.correct) onComplete();
+                else onError(data.correct === "Propia" ? "Fíjate en el gráfico. No alcanza a llenar ni un bloque entero. Es Propia." : "Fíjate en el gráfico. Se necesita más de un bloque entero. Es Impropia.");
+            };
+
+            return (
+                <div className="horizontal-layout">
+                    <div className="robot-pane">
+                        <RobotGuide text="Observa el gráfico de la fracción. ¿Es Propia o Impropia? Coloca la etiqueta correcta." />
+                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Comprobar</Button>
+                    </div>
+                    
+                    <div className="interaction-pane">
+                        <div className="glass-panel p-16 rounded-[4rem] border-4 border-[var(--brand-tertiary)] shadow-2xl flex flex-col items-center justify-center gap-10 w-full min-w-[500px]">
+                            
+                            <div className="flex flex-row items-center justify-center gap-12 bg-slate-900/50 p-8 rounded-[3rem] w-full">
+                                <FractionDisplay num={data.num} den={data.den} />
+                                <div className="w-1 h-32 bg-white/20 rounded-full"></div>
+                                <FractionGraphic n={data.num} d={data.den} theme="default" />
+                            </div>
+                            
+                            <div onClick={handleDrop} className={`w-80 h-32 rounded-3xl dropzone ${selected && !placed ? 'active' : ''} ${placed ? 'filled' : ''}`}>
+                                {placed ? (
+                                    <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-2xl flex items-center justify-center text-5xl font-black pop-in cursor-pointer shadow-[0_0_20px_rgba(255,230,0,0.6)] uppercase tracking-wider">
+                                        {placed}
+                                    </div>
+                                ) : <span className="text-slate-400 font-bold text-2xl text-center px-2">Colocar Etiqueta</span>}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row gap-8 bg-slate-800/80 p-8 rounded-[3rem] border-4 border-slate-600 w-full justify-center">
+                            {['Propia', 'Impropia'].map(sym => (
+                                <div key={sym} onClick={() => handleSelect(sym)}
+                                    className={`draggable-item px-10 h-28 text-4xl font-black rounded-2xl flex items-center justify-center border-4 shadow-xl uppercase tracking-wider ${
+                                        selected === sym ? 'pulse-glow bg-[var(--brand-secondary)] text-slate-900' : 'bg-slate-700 text-white border-slate-500'
+                                    } ${placed === sym ? 'opacity-30 grayscale pointer-events-none' : ''}`}
+                                >
+                                    {sym}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- BLOQUE 2: Armando el Mixto (Problemas Gráficos Llamativos) ---
+        const ActMixedWord = ({ data, onComplete, onError }) => {
+            const [selected, setSelected] = useState(null);
+            const [placed, setPlaced] = useState({ w: null, n: null, d: null });
+            const playPop = useSound('pop');
+            const playPlace = useSound('place');
+
+            const handleSelect = (num) => { playPop(); setSelected(num); };
+            const handleDrop = (zone) => { if (selected !== null) { playPlace(); setPlaced({ ...placed, [zone]: selected }); setSelected(null); } };
+            const handleRemove = (zone, e) => { e.stopPropagation(); playPop(); setPlaced({ ...placed, [zone]: null }); };
+
+            const check = () => {
+                if (placed.w === null || placed.n === null || placed.d === null) { onError("¡Arma el número mixto completo!"); return; }
+                if (placed.w === data.ansW && placed.n === data.ansN && placed.d === data.ansD) onComplete();
+                else onError("Cuenta los bloques llenos para el entero. Lo que sobra forma la fracción.");
+            };
+
+            return (
+                <div className="horizontal-layout">
+                    <div className="robot-pane">
+                        <RobotGuide text="Lee el problema y observa los gráficos llamativos. Forma el número mixto. Puedes usar el mismo número varias veces." />
+                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Comprobar</Button>
+                    </div>
+                    
+                    <div className="interaction-pane">
+                        <div className="flex flex-col gap-6 w-full min-w-[500px]">
+                            <div className="glass-panel p-8 rounded-[3rem] border-l-8 border-[var(--brand-secondary)] shadow-xl w-full text-2xl font-bold leading-relaxed text-white">
+                                {data.text}
+                                <div className="mt-6 flex flex-col items-center gap-6 bg-slate-900/70 p-6 rounded-2xl w-full border-2 border-slate-600">
+                                    <div className="flex items-center gap-6 justify-center w-full">
+                                        <div className="scale-75 origin-center"><FractionDisplay num={data.origN} den={data.origD} /></div>
+                                        <div className="text-white text-3xl font-black">=</div>
+                                        <div className="scale-110"><FractionGraphic n={data.origN} d={data.origD} theme={data.theme} /></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel p-10 rounded-[3rem] border-4 border-[var(--brand-green)] flex flex-row items-center justify-center gap-8 shadow-[0_0_30px_rgba(0,255,102,0.2)]">
+                                <div onClick={() => handleDrop('w')} className={`w-32 h-36 rounded-3xl dropzone flex-col ${selected && !placed.w ? 'active' : ''} ${placed.w ? 'filled border-[var(--brand-green)] bg-[var(--brand-green)]/20' : ''}`}>
+                                    {placed.w ? (
+                                        <div onClick={(e) => handleRemove('w', e)} className="w-full h-full bg-[var(--brand-green)] text-slate-900 rounded-2xl flex items-center justify-center text-7xl font-black pop-in cursor-pointer shadow-lg">{placed.w}</div>
+                                    ) : <span className="text-slate-400 font-bold">Entero</span>}
+                                </div>
+
+                                <div className="flex flex-col items-center gap-4">
+                                    <div onClick={() => handleDrop('n')} className={`w-24 h-24 rounded-2xl dropzone flex-col ${selected && !placed.n ? 'active' : ''} ${placed.n ? 'filled border-[var(--brand-green)] bg-[var(--brand-green)]/20' : ''}`}>
+                                        {placed.n ? (
+                                            <div onClick={(e) => handleRemove('n', e)} className="w-full h-full bg-white text-slate-900 rounded-xl flex items-center justify-center text-5xl font-black pop-in cursor-pointer shadow-lg">{placed.n}</div>
+                                        ) : <span className="text-slate-400 font-bold text-sm">Num</span>}
+                                    </div>
+                                    <div className="w-32 h-4 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+                                    <div onClick={() => handleDrop('d')} className={`w-24 h-24 rounded-2xl dropzone flex-col ${selected && !placed.d ? 'active' : ''} ${placed.d ? 'filled border-[var(--brand-green)] bg-[var(--brand-green)]/20' : ''}`}>
+                                        {placed.d ? (
+                                            <div onClick={(e) => handleRemove('d', e)} className="w-full h-full bg-white text-slate-900 rounded-xl flex items-center justify-center text-5xl font-black pop-in cursor-pointer shadow-lg">{placed.d}</div>
+                                        ) : <span className="text-slate-400 font-bold text-sm">Den</span>}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* POOL INFINITO */}
+                        <div className="flex flex-row flex-wrap justify-center gap-6 bg-slate-800/80 p-6 rounded-[3rem] border-4 border-slate-600 w-full">
+                            {data.pool.map((num, i) => (
+                                <div key={i} onClick={() => handleSelect(num)}
+                                    className={`draggable-item w-20 h-20 text-4xl font-black rounded-2xl flex items-center justify-center border-4 shadow-xl ${
+                                        selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900' : 'bg-slate-700 text-white border-slate-500'
+                                    }`}
+                                >
+                                    {num}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- BLOQUE 3: Balanza Ecuación 1er Grado (x + a = b) ---
+        const ActEquationBalance = ({ data, onComplete, onError }) => {
+            const [selected, setSelected] = useState(null);
+            const [placed, setPlaced] = useState(null);
+            const [showHint, setShowHint] = useState(false);
+            const playPop = useSound('pop');
+            const playPlace = useSound('place');
+
+            const handleSelect = (num) => { playPop(); setSelected(num); };
+            const handleDrop = () => { if(selected !== null) { playPlace(); setPlaced(selected); setSelected(null); } };
+            const handleRemove = (e) => { e.stopPropagation(); playPop(); setPlaced(null); };
+
+            const check = () => {
+                if (placed === null) { onError("Resuelve la ecuación y coloca el valor de X en la caja."); return; }
+                if (placed === data.xValue) onComplete();
+                else onError(`Recuerda transponer términos: X = ${data.totalValue} - ${data.addValue}.`);
+            };
+
+            const tilt = placed === null ? -10 : (placed + data.addValue === data.totalValue ? 0 : (placed + data.addValue < data.totalValue ? -10 : 10));
+
+            return (
+                <div className="horizontal-layout relative">
+                    <button onClick={() => setShowHint(true)} className="absolute top-8 right-8 bg-[var(--brand-secondary)] text-slate-900 rounded-full p-4 shadow-lg bouncy-hover z-50 flex items-center gap-2 font-bold">
+                        <Info size={24} /> Ver Apunte de Clase
+                    </button>
+
+                    {showHint && (
+                        <div className="absolute inset-0 bg-black/80 z-[100] flex items-center justify-center pop-in" onClick={() => setShowHint(false)}>
+                            <div className="bg-white p-4 rounded-3xl max-w-lg text-center relative border-8 border-[var(--brand-primary)]" onClick={e => e.stopPropagation()}>
+                                <h3 className="text-3xl font-bold text-slate-900 mb-4 font-['Fredoka']">Transponiendo Términos</h3>
+                                <img src="image_4e908b.jpg" alt="Apunte de clase" className="w-full rounded-xl border border-slate-300" />
+                                <Button onClick={() => setShowHint(false)} variant="primary" className="mt-6 w-full">Cerrar</Button>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="robot-pane">
+                        <RobotGuide text={`Halla el valor de X resolviendo la ecuación de primer grado.`}>
+                            <div className="bg-slate-800 text-white px-6 py-2 rounded-xl mt-2 font-mono text-2xl border-2 border-slate-500">
+                                X + {data.addValue} = {data.totalValue}
+                            </div>
+                        </RobotGuide>
+                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Comprobar</Button>
+                    </div>
+                    
+                    <div className="interaction-pane">
+                        <div className="flex flex-col items-center w-full min-w-[600px]">
+                            
+                            <div className="w-full max-w-2xl h-[320px] relative flex flex-col items-center justify-end pb-12 mt-8">
+                                <div className="w-full h-6 bg-slate-400 absolute bottom-32 rounded-full balance-beam origin-center z-10 shadow-[0_5px_15px_rgba(0,0,0,0.5)] border-2 border-slate-500"
+                                     style={{ transform: `rotate(${tilt}deg)` }}>
+                                    
+                                    {/* Izquierda (X + addValue) */}
+                                    <div className="absolute left-8 -bottom-20 w-48 h-8 bg-slate-700 border-t-8 border-slate-500 rounded-b-[2rem] flex items-end justify-center pb-2 gap-2 shadow-2xl" style={{ transform: `rotate(${-tilt}deg)` }}>
+                                        <div className="w-20 h-24 bg-[var(--brand-primary)] text-white border-4 border-white rounded-xl flex items-center justify-center text-5xl font-black shadow-lg">X</div>
+                                        <div className="w-16 h-20 bg-slate-300 text-slate-900 border-4 border-slate-500 rounded-t-xl rounded-b flex items-center justify-center text-3xl font-black shadow-lg">+{data.addValue}</div>
+                                        <div className="absolute bottom-6 left-0 w-1 h-28 bg-slate-500 origin-bottom transform -rotate-12"></div>
+                                        <div className="absolute bottom-6 right-0 w-1 h-28 bg-slate-500 origin-bottom transform rotate-12"></div>
+                                    </div>
+
+                                    {/* Derecha (Total) */}
+                                    <div className="absolute right-8 -bottom-20 w-48 h-8 bg-slate-700 border-t-8 border-slate-500 rounded-b-[2rem] flex items-end justify-center pb-2 shadow-2xl" style={{ transform: `rotate(${-tilt}deg)` }}>
+                                        <div className="w-24 h-28 bg-[var(--brand-tertiary)] text-white border-4 border-white rounded-t-2xl rounded-b flex items-center justify-center text-5xl font-black shadow-lg">{data.totalValue}</div>
+                                        <div className="absolute bottom-6 left-0 w-1 h-28 bg-slate-500 origin-bottom transform -rotate-12"></div>
+                                        <div className="absolute bottom-6 right-0 w-1 h-28 bg-slate-500 origin-bottom transform rotate-12"></div>
+                                    </div>
+                                </div>
+                                <div className="w-24 h-40 bg-slate-600 rounded-t-full border-4 border-slate-500 z-0 relative flex flex-col items-center justify-end pb-4 shadow-xl">
+                                    <div className="w-4 h-24 bg-[var(--brand-yellow)] rounded-full"></div>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel p-6 rounded-3xl border-4 border-[var(--brand-secondary)] flex items-center gap-8 mt-2 w-max">
+                                <span className="text-5xl font-black text-white">X =</span>
+                                <div onClick={handleDrop} className={`w-32 h-24 rounded-2xl dropzone ${selected && !placed ? 'active' : ''} ${placed ? 'filled border-none' : ''}`}>
+                                    {placed ? (
+                                        <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-xl flex items-center justify-center text-5xl font-black pop-in shadow-[0_0_15px_rgba(255,230,0,0.6)] cursor-pointer">{placed}</div>
+                                    ) : <span className="text-slate-400 font-bold text-center text-lg">Soltar aquí</span>}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row flex-wrap justify-center gap-6 bg-slate-800/80 p-6 rounded-[3rem] border-4 border-slate-600 w-full">
+                            {data.pool.map((num, i) => (
+                                <div key={i} onClick={() => handleSelect(num)}
+                                    className={`draggable-item w-20 h-20 text-4xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_5px_0_0_rgba(0,0,0,0.5)] ${
+                                        selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900 border-white' : 'bg-slate-600 text-white border-slate-400'
+                                    } ${placed === num ? 'opacity-20 grayscale pointer-events-none' : ''}`}
+                                >
+                                    {num}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- BLOQUE 4: Balanza Álgebra (aX + b = c) ---
+        const ActAlgebraBalance = ({ data, onComplete, onError }) => {
+            const [selected, setSelected] = useState(null);
+            const [placed, setPlaced] = useState(null);
+            const playPop = useSound('pop');
+            const playPlace = useSound('place');
+
+            const handleSelect = (num) => { playPop(); setSelected(num); };
+            const handleDrop = () => { if(selected) { playPlace(); setPlaced(selected); setSelected(null); } };
+            const handleRemove = (e) => { e.stopPropagation(); playPop(); setPlaced(null); };
+
+            const check = () => {
+                if (!placed) { onError("Resuelve la ecuación y coloca el valor de X."); return; }
+                if (placed === data.xValue) onComplete();
+                else onError(`Pista: Tienes ${data.totalValue}. Quítale los ${data.addValue} que sobran, y divídelo entre las ${data.xCount} X.`);
+            };
+
+            return (
+                <div className="horizontal-layout">
+                    <div className="robot-pane">
+                        <RobotGuide text={`Encuentra el valor de X. Recuerda: primero resta, luego divide.`}>
+                            <div className="bg-slate-800 text-white px-6 py-2 rounded-xl mt-2 font-mono text-2xl border-2 border-slate-500">
+                                {data.xCount}X {data.addValue > 0 ? `+ ${data.addValue}` : ''} = {data.totalValue}
+                            </div>
+                        </RobotGuide>
+                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Comprobar</Button>
+                    </div>
+                    
+                    <div className="interaction-pane">
+                        <div className="flex flex-col items-center w-full min-w-[600px]">
+                            <div className="w-full max-w-2xl h-[300px] relative flex flex-col items-center justify-end pb-8 mt-4">
+                                <div className="w-full h-6 bg-slate-400 absolute bottom-24 rounded-full z-10 shadow-[0_5px_15px_rgba(0,0,0,0.5)] border-2 border-slate-500">
+                                    <div className="absolute left-4 -bottom-16 w-56 h-8 bg-slate-700 border-t-8 border-slate-500 rounded-b-[2rem] flex items-end justify-center pb-2 gap-1 shadow-2xl">
+                                        {Array.from({length: data.xCount}).map((_, i) => (
+                                            <div key={i} className="w-12 h-12 bg-blue-500 border-2 border-blue-300 rounded-lg shadow-lg flex items-center justify-center text-white font-black text-xl">X</div>
+                                        ))}
+                                        {data.addValue > 0 && (
+                                            <div className="w-14 h-16 bg-slate-300 border-2 border-slate-500 rounded-t-xl rounded-b shadow-lg flex flex-col items-center justify-center text-slate-900 font-black">
+                                                <span className="text-xl">+{data.addValue}</span>
+                                            </div>
+                                        )}
+                                        <div className="absolute bottom-6 left-0 w-1 h-24 bg-slate-500 origin-bottom transform -rotate-12"></div>
+                                        <div className="absolute bottom-6 right-0 w-1 h-24 bg-slate-500 origin-bottom transform rotate-12"></div>
+                                    </div>
+                                    <div className="absolute right-4 -bottom-16 w-56 h-8 bg-slate-700 border-t-8 border-slate-500 rounded-b-[2rem] flex items-end justify-center pb-2 shadow-2xl">
+                                        <div className="w-24 h-24 bg-[var(--brand-tertiary)] border-4 border-white rounded-t-2xl rounded-b shadow-lg flex flex-col items-center justify-center text-white font-black">
+                                            <span className="text-4xl">{data.totalValue}</span>
+                                        </div>
+                                        <div className="absolute bottom-6 left-0 w-1 h-24 bg-slate-500 origin-bottom transform -rotate-12"></div>
+                                        <div className="absolute bottom-6 right-0 w-1 h-24 bg-slate-500 origin-bottom transform rotate-12"></div>
+                                    </div>
+                                </div>
+                                <div className="w-20 h-32 bg-slate-600 rounded-t-full border-4 border-slate-500 z-0 relative flex flex-col items-center justify-end pb-4 shadow-xl">
+                                    <div className="w-4 h-16 bg-green-400 rounded-full"></div>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel p-6 rounded-3xl border-4 border-[var(--brand-secondary)] flex items-center gap-8 mt-2 w-max">
+                                <span className="text-4xl font-black text-white">X =</span>
+                                <div onClick={handleDrop} className={`w-32 h-20 rounded-2xl dropzone ${selected && !placed ? 'active' : ''} ${placed ? 'filled' : ''}`}>
+                                    {placed ? (
+                                        <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-xl flex items-center justify-center text-4xl font-black pop-in shadow-[0_0_15px_rgba(255,230,0,0.6)] cursor-pointer">{placed}</div>
+                                    ) : <span className="text-slate-400 font-bold text-center text-sm">Colocar valor</span>}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row flex-wrap justify-center gap-6 bg-slate-800/80 p-6 rounded-[3rem] border-4 border-slate-600 w-full">
+                            {data.pool.map((w, i) => (
+                                <div key={i} onClick={() => handleSelect(w)}
+                                    className={`draggable-item w-24 h-16 bg-slate-700 border-4 rounded-t-xl rounded-b flex items-center justify-center text-2xl font-black text-white shadow-[0_5px_0_0_rgba(0,0,0,0.4)] ${
+                                        selected === w ? 'pulse-glow border-white bg-slate-600' : 'border-slate-500'
+                                    } ${placed === w ? 'opacity-30 grayscale pointer-events-none' : ''}`}
+                                >
+                                    {w}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- BLOQUE 5: Representación Dual de Mixtos (Gráfico + Recta Numérica) ---
+        const ActMixedNumberLine = ({ data, onComplete, onError }) => {
+            const [shadedBlocks, setShadedBlocks] = useState(new Set());
+            const [markerPos, setMarkerPos] = useState(null);
+            const playPop = useSound('pop');
+            const playPlace = useSound('place');
+            
+            const maxWholes = data.w + 1; 
+            const totalTicks = maxWholes * data.d + 1;
+            const targetTotalShaded = (data.w * data.d) + data.n;
+
+            const toggleBlock = (index) => {
+                playPop();
+                const newSet = new Set(shadedBlocks);
+                if (newSet.has(index)) newSet.delete(index);
+                else newSet.add(index);
+                setShadedBlocks(newSet);
+            };
+
+            const handleTickClick = (pos) => { playPlace(); setMarkerPos(pos); };
+
+            const check = () => {
+                const isBlocksCorrect = shadedBlocks.size === targetTotalShaded;
+                const isLineCorrect = markerPos === targetTotalShaded;
+
+                if (isBlocksCorrect && isLineCorrect) {
+                    onComplete();
+                } else if (!isBlocksCorrect && !isLineCorrect) {
+                    onError(`Pinta exactamente ${data.w} enteros y ${data.n}/${data.d} extra. Y coloca la marca en la posición correcta de la recta.`);
+                } else if (!isBlocksCorrect) {
+                    onError("La recta está bien, pero revisa los bloques pintados. Fíjate cuántas partes en total debes sombrear.");
+                } else if (!isLineCorrect) {
+                    onError("Los bloques están bien, pero la marca no está en el lugar correcto en la recta numérica.");
+                }
+            };
+
+            return (
+                <div className="horizontal-layout flex-col !gap-6">
+                    <div className="flex w-full items-center justify-between gap-8 mb-4">
+                        <RobotGuide text="Representa el número mixto: Pinta los bloques necesarios y marca la posición en la recta numérica." />
+                        
+                        <div className="glass-panel p-6 rounded-[3rem] border-4 border-[var(--brand-yellow)] bg-slate-900/90 shadow-[0_0_30px_rgba(255,230,0,0.3)] flex items-center justify-center">
+                            <div className="flex items-center gap-4 text-[var(--brand-yellow)] font-black text-7xl">
+                                <span>{data.w}</span>
+                                <FractionDisplay num={data.n} den={data.d} />
+                            </div>
+                        </div>
+
+                        <Button onClick={check} variant="primary" className="text-3xl py-6 px-12">Comprobar</Button>
+                    </div>
+                    
+                    <div className="w-full flex gap-8 h-full">
+                        {/* 1. Bloques Interactivos */}
+                        <div className="glass-panel p-8 rounded-[3rem] border-4 border-slate-500 shadow-2xl flex-1 flex flex-col items-center justify-center gap-4">
+                            <h3 className="text-2xl font-black text-slate-300 uppercase tracking-widest border-b-4 border-slate-500 pb-2 mb-4">1. Pinta los Bloques</h3>
+                            <div className="flex flex-wrap gap-6 justify-center">
+                                {Array.from({length: maxWholes}).map((_, wIndex) => (
+                                    <div key={wIndex} className="flex border-4 border-slate-300 rounded-xl overflow-hidden bg-slate-800 shadow-xl">
+                                        {Array.from({length: data.d}).map((_, dIndex) => {
+                                            const blockIndex = wIndex * data.d + dIndex;
+                                            const isShaded = shadedBlocks.has(blockIndex);
+                                            return (
+                                                <div key={blockIndex} 
+                                                     onClick={() => toggleBlock(blockIndex)}
+                                                     className={`w-12 h-20 border-r-4 border-slate-600 last:border-r-0 cursor-pointer transition-colors duration-200 
+                                                     ${isShaded ? 'bg-[var(--brand-secondary)] shadow-[inset_0_0_20px_rgba(255,255,255,0.6)]' : 'hover:bg-slate-700'}`}>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* 2. Recta Numérica Interactiva (MARCADOR CENTRADO EXACTO) */}
+                        <div className="glass-panel p-8 rounded-[3rem] border-4 border-slate-500 shadow-2xl flex-1 flex flex-col items-center justify-center relative overflow-hidden">
+                            <h3 className="text-2xl font-black text-slate-300 uppercase tracking-widest border-b-4 border-slate-500 pb-2 mb-16">2. Ubica en la Recta</h3>
+                            
+                            <div className="w-11/12 h-10 bg-slate-700 rounded-full relative shadow-inner mt-8">
+                                {/* Sombreado Dinámico en Recta */}
+                                {markerPos !== null && (
+                                    <div className="absolute top-0 left-0 h-full bg-[var(--brand-green)] rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(0,255,102,0.8)]"
+                                         style={{ width: `${(markerPos / (totalTicks - 1)) * 100}%` }}>
+                                    </div>
+                                )}
+
+                                {Array.from({length: totalTicks}).map((_, pos) => {
+                                    const isWhole = pos % data.d === 0;
+                                    const wholeNum = pos / data.d;
+                                    return (
+                                    <div key={pos} onClick={() => handleTickClick(pos)}
+                                        className={`absolute top-1/2 -translate-y-1/2 rounded-full cursor-pointer hover:bg-white transition-colors border-4 border-slate-900 z-10 flex items-center justify-center ${isWhole ? 'bg-[var(--brand-tertiary)] h-24 w-10' : 'bg-slate-400 h-16 w-6'}`}
+                                        style={{left: `${(pos/(totalTicks-1))*100}%`, transform: 'translate(-50%, -50%)'}}
+                                    >
+                                        {isWhole && <span className="absolute top-[110%] left-1/2 -translate-x-1/2 text-5xl font-black text-white mt-4">{wholeNum}</span>}
+                                        
+                                        {/* Marcador perfectamente centrado usando transform desde el centro de la marca */}
+                                        {markerPos === pos && (
+                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none pop-in flex items-center justify-center">
+                                                <div className="w-12 h-12 bg-[var(--brand-yellow)] rounded-full border-4 border-white shadow-[0_0_20px_rgba(255,230,0,0.8)]"></div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )})}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+
+        const missionsData = [
+            // BLOQUE 1: Clasificar Gráfico (8 items)
+            [
+                { type: 'classify', num: 3, den: 4, correct: 'Propia' },
+                { type: 'classify', num: 6, den: 5, correct: 'Impropia' },
+                { type: 'classify', num: 1, den: 2, correct: 'Propia' },
+                { type: 'classify', num: 9, den: 4, correct: 'Impropia' },
+                { type: 'classify', num: 5, den: 8, correct: 'Propia' },
+                { type: 'classify', num: 7, den: 3, correct: 'Impropia' },
+                { type: 'classify', num: 2, den: 5, correct: 'Propia' },
+                { type: 'classify', num: 11, den: 6, correct: 'Impropia' }
+            ],
+            // BLOQUE 2: Problemas de Mixtos (8 items)
+            [
+                { type: 'mixed_word', text: "El albergue compró 3/2 kilos de avena.", origN: 3, origD: 2, ansW: 1, ansN: 1, ansD: 2, pool: [1, 2, 3], theme: 'default' },
+                { type: 'mixed_word', text: "Compraron 11/4 kilos de quinua.", origN: 11, origD: 4, ansW: 2, ansN: 3, ansD: 4, pool: [2, 3, 4], theme: 'default' },
+                { type: 'mixed_word', text: "Repartieron 13/6 barras de chocolate.", origN: 13, origD: 6, ansW: 2, ansN: 1, ansD: 6, pool: [1, 2, 6], theme: 'chocolate' },
+                { type: 'mixed_word', text: "Comieron 9/4 de pizza en la fiesta.", origN: 9, origD: 4, ansW: 2, ansN: 1, ansD: 4, pool: [1, 2, 4], theme: 'pizza' },
+                { type: 'mixed_word', text: "Compraron 17/5 toneladas de material.", origN: 17, origD: 5, ansW: 3, ansN: 2, ansD: 5, pool: [2, 3, 5], theme: 'default' },
+                { type: 'mixed_word', text: "Quedaron 7/3 de pastel.", origN: 7, origD: 3, ansW: 2, ansN: 1, ansD: 3, pool: [1, 2, 3], theme: 'pizza' },
+                { type: 'mixed_word', text: "Usaron 19/8 barras de cacao.", origN: 19, origD: 8, ansW: 2, ansN: 3, ansD: 8, pool: [2, 3, 8], theme: 'chocolate' },
+                { type: 'mixed_word', text: "Se necesitan 15/4 bloques de hielo.", origN: 15, origD: 4, ansW: 3, ansN: 3, ansD: 4, pool: [3, 4, 5], theme: 'default' }
+            ],
+            // BLOQUE 3: Ecuaciones de 1er grado Suma/Resta (8 items)
+            [
+                { type: 'eq_balance_1', xValue: 9, addValue: 5, totalValue: 14, pool: [7, 8, 9, 10, 11] },
+                { type: 'eq_balance_1', xValue: 35, addValue: 12, totalValue: 47, pool: [25, 35, 45, 55, 65] }, 
+                { type: 'eq_balance_1', xValue: 20, addValue: 15, totalValue: 35, pool: [10, 15, 20, 25, 30] },
+                { type: 'eq_balance_1', xValue: 12, addValue: 8, totalValue: 20, pool: [8, 10, 12, 14, 16] },
+                { type: 'eq_balance_1', xValue: 45, addValue: 20, totalValue: 65, pool: [35, 40, 45, 50, 55] },
+                { type: 'eq_balance_1', xValue: 18, addValue: 7, totalValue: 25, pool: [16, 17, 18, 19, 20] },
+                { type: 'eq_balance_1', xValue: 50, addValue: 25, totalValue: 75, pool: [30, 40, 50, 60, 70] },
+                { type: 'eq_balance_1', xValue: 100, addValue: 50, totalValue: 150, pool: [80, 90, 100, 110, 120] } 
+            ],
+            // BLOQUE 4: Balanza Algebraica (aX + b = c) (8 items)
+            [
+                { type: 'algebra_balance', xCount: 2, xValue: 150, addValue: 50, totalValue: 350, pool: [100, 150, 200, 300] },
+                { type: 'algebra_balance', xCount: 3, xValue: 30, addValue: 10, totalValue: 100, pool: [20, 30, 40, 50] },
+                { type: 'algebra_balance', xCount: 4, xValue: 20, addValue: 20, totalValue: 100, pool: [10, 20, 30, 40] },
+                { type: 'algebra_balance', xCount: 2, xValue: 40, addValue: 10, totalValue: 90, pool: [30, 40, 50, 60] },
+                { type: 'algebra_balance', xCount: 5, xValue: 10, addValue: 0, totalValue: 50, pool: [5, 10, 15, 20] },
+                { type: 'algebra_balance', xCount: 3, xValue: 25, addValue: 15, totalValue: 90, pool: [15, 25, 35, 45] },
+                { type: 'algebra_balance', xCount: 2, xValue: 120, addValue: 60, totalValue: 300, pool: [100, 110, 120, 130] },
+                { type: 'algebra_balance', xCount: 4, xValue: 15, addValue: 10, totalValue: 70, pool: [10, 15, 20, 25] } 
+            ],
+            // BLOQUE 5: Dual Mixto (Gráfico y Recta) (8 items)
+            [
+                { type: 'dual_mixed', w: 1, n: 1, d: 2 }, 
+                { type: 'dual_mixed', w: 2, n: 1, d: 6 }, 
+                { type: 'dual_mixed', w: 1, n: 5, d: 8 }, 
+                { type: 'dual_mixed', w: 2, n: 3, d: 4 }, 
+                { type: 'dual_mixed', w: 3, n: 1, d: 3 }, 
+                { type: 'dual_mixed', w: 1, n: 2, d: 5 }, 
+                { type: 'dual_mixed', w: 2, n: 1, d: 4 }, 
+                { type: 'dual_mixed', w: 3, n: 3, d: 5 }  
+            ]
+        ];
+
+        const MissionHub = ({ onSelectBlock, completedBlocks }) => {
+            const blockNames = ["Clasificar Gráficamente", "Resolviendo Problemas", "Ecuación: Halla X", "Balanza Algebraica", "Gráfico y Recta (Mixtos)"];
+            return (
+                <div className="flex flex-col items-center justify-center h-full w-full max-w-7xl mx-auto p-12 pop-in">
+                    <h1 className="text-7xl font-black text-white mb-4 uppercase neon-text text-center tracking-wide">Centro de Mando</h1>
+                    <p className="text-3xl text-[var(--brand-secondary)] mb-12 font-bold text-center">Selecciona tu entrenamiento táctil, Agente.</p>
+                    
+                    <div className="flex flex-wrap justify-center gap-10 w-full px-4 max-w-6xl">
+                        {blockNames.map((name, index) => {
+                            const isCompleted = completedBlocks.includes(index);
+                            return (
+                                <button key={index} onClick={() => onSelectBlock(index)}
+                                    className={`relative flex flex-col items-center justify-center p-10 rounded-[3rem] border-4 transition-all bouncy-hover shadow-2xl overflow-hidden min-h-[250px] flex-1 min-w-[300px] max-w-[400px]
+                                        ${isCompleted ? 'bg-[var(--brand-green)]/10 border-[var(--brand-green)] hover:bg-[var(--brand-green)]/30' : 'bg-slate-800/80 border-slate-500 hover:border-white hover:bg-slate-700'}
+                                    `}
+                                >
+                                    {isCompleted && <div className="absolute top-4 right-4 bg-[var(--brand-green)] text-slate-900 rounded-full p-2 shadow-[0_0_15px_rgba(0,255,102,1)]"><Star size={32} className="fill-current"/></div>}
+                                    <div className={`text-7xl font-black mb-4 ${isCompleted ? 'text-[var(--brand-green)]' : 'text-slate-400'}`}>0{index + 1}</div>
+                                    <h3 className="text-3xl font-bold text-white text-center leading-tight">{name}</h3>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            );
+        };
+
+        const SuccessModal = ({ isVisible, onNext, isBlockComplete }) => {
+            const playWin = useSound(isBlockComplete ? 'win' : 'success');
+            useEffect(() => { if(isVisible) playWin(); }, [isVisible, playWin]);
+            if (!isVisible) return null;
+            return (
+                <div className="absolute inset-0 bg-[#0B0E14]/95 backdrop-blur-xl z-[200] flex items-center justify-center pop-in">
+                    <Confetti />
+                    <div className="glass-panel p-20 rounded-[4rem] shadow-[0_0_100px_rgba(0,255,102,0.3)] flex flex-col items-center text-center max-w-3xl border-8 border-[var(--brand-green)] relative">
+                        <div className="w-48 h-48 bg-[var(--brand-green)]/20 text-[var(--brand-green)] rounded-full flex items-center justify-center mb-10 float-anim border-4 border-[var(--brand-green)]">
+                            <Check size={120} />
+                        </div>
+                        <h2 className="text-7xl font-black text-white mb-8 neon-text">¡Misión Cumplida!</h2>
+                        <div className="bg-[var(--brand-yellow)] text-slate-900 font-black text-4xl px-12 py-5 rounded-full mb-12 shadow-[0_0_30px_rgba(255,230,0,0.5)] transform -rotate-2">
+                            +20 PUNTOS
+                        </div>
+                        <Button onClick={onNext} variant="secondary" className="text-5xl px-20 py-8">
+                            {isBlockComplete ? "Volver al Menú" : "Siguiente Nivel"} <ArrowLeft size={40} className="transform rotate-180" />
+                        </Button>
+                    </div>
+                </div>
+            );
+        };
+
+        function TuProfe20LabV2() {
+            const [view, setView] = useState('start');
+            const [currentBlock, setCurrentBlock] = useState(0);
+            const [currentLevel, setCurrentLevel] = useState(0);
+            const [completedBlocks, setCompletedBlocks] = useState([]);
+            const [showCheck, setShowCheck] = useState(false);
+            const [errorMsg, setErrorMsg] = useState("");
+            const [soundOn, setSoundOn] = useState(() => localStorage.getItem('tuprofe20-sound') !== 'off');
+            
+            const playClick = useSound('click');
+            const playError = useSound('wrong');
+
+            const totalScore = completedBlocks.length * 160 + (view === 'playing' ? currentLevel * 20 : 0);
+
+            useEffect(() => {
+                const saved = localStorage.getItem('tuprofe20-progress');
+                if (saved) { try { setCompletedBlocks(JSON.parse(saved)); } catch (_) {} }
+            }, []);
+            useEffect(() => { soundEnabled = soundOn; localStorage.setItem('tuprofe20-sound', soundOn ? 'on' : 'off'); }, [soundOn]);
+            useEffect(() => { localStorage.setItem('tuprofe20-progress', JSON.stringify(completedBlocks)); }, [completedBlocks]);
+            useEffect(() => {
+                const onKey = (event) => { if (event.key === 'Escape' && view === 'playing') setView('hub'); };
+                window.addEventListener('keydown', onKey);
+                return () => window.removeEventListener('keydown', onKey);
+            }, [view]);
+
+            const handleStart = () => { playClick(); setView('hub'); };
+            const handleSelectBlock = (blockIndex) => { playClick(); setCurrentBlock(blockIndex); setCurrentLevel(0); setView('playing'); };
+            
+            const handleSuccess = () => { setShowCheck(true); setErrorMsg(""); };
+            const handleError = (msg) => { playError(); setErrorMsg(msg); setTimeout(() => setErrorMsg(""), 5500); };
+
+            const handleNext = () => { 
+                setShowCheck(false);
+                if (currentLevel < 7) { 
+                    setCurrentLevel(l => l + 1); 
+                } 
+                else {
+                    if (!completedBlocks.includes(currentBlock)) setCompletedBlocks([...completedBlocks, currentBlock]);
+                    setView('hub');
+                }
+            };
+
+            const renderCurrentActivity = () => {
+                const mission = missionsData[currentBlock][currentLevel];
+                const props = { data: mission, onComplete: handleSuccess, onError: handleError };
+
+                switch (mission.type) {
+                    case 'classify': return <ActClassifyGraphic key={`${currentBlock}-${currentLevel}`} {...props} />;
+                    case 'mixed_word': return <ActMixedWord key={`${currentBlock}-${currentLevel}`} {...props} />;
+                    case 'eq_balance_1': return <ActEquationBalance key={`${currentBlock}-${currentLevel}`} {...props} />;
+                    case 'algebra_balance': return <ActAlgebraBalance key={`${currentBlock}-${currentLevel}`} {...props} />;
+                    case 'dual_mixed': return <ActMixedNumberLine key={`${currentBlock}-${currentLevel}`} {...props} />;
+                    default: return <div>Cargando...</div>;
+                }
+            };
+
+            return (
+                <div className="app-container">
+                    <DynamicBackground />
+                    
+                    {view !== 'start' && (
+                        <div className="min-h-24 bg-slate-900/90 backdrop-blur-xl border-b border-white/10 px-4 md:px-12 py-3 flex items-center justify-between gap-4 shadow-2xl z-20 shrink-0 w-full">
+                            <div className="flex items-center gap-6">
+                                {view === 'playing' && (
+                                    <button onClick={() => {playClick(); setView('hub');}} className="w-16 h-16 bg-slate-800 hover:bg-[var(--brand-primary)] border-2 border-slate-600 hover:border-white rounded-2xl flex items-center justify-center transition-all bouncy-hover text-white shadow-lg">
+                                        <ArrowLeft size={36} />
+                                    </button>
+                                )}
+                                <div className="font-black text-white uppercase tracking-widest text-lg md:text-3xl drop-shadow-md">
+                                    {view === 'hub' ? "Centro de Mando" : `Bloque ${currentBlock + 1} - Nivel ${currentLevel + 1}/8`}
+                                    {view === 'playing' && <div className="progress-track w-40 md:w-72 mt-2"><div className="progress-fill" style={{width: `${((currentLevel + 1) / 8) * 100}%`}} /></div>}
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 md:gap-4">
+                            <button type="button" onClick={() => setSoundOn(v => !v)} className="icon-button bouncy-hover text-2xl" aria-label={soundOn ? 'Silenciar sonidos' : 'Activar sonidos'} title={soundOn ? 'Silenciar' : 'Activar sonido'}>{soundOn ? '🔊' : '🔇'}</button>
+                            <div className="flex items-center gap-2 bg-slate-800/80 px-3 md:px-8 py-3 md:py-4 rounded-full border-2 border-[var(--brand-yellow)] shadow-[0_0_20px_rgba(255,230,0,0.3)]">
+                                <Star size={36} className="text-[var(--brand-yellow)] fill-current animate-pulse" />
+                                <span className="font-black text-[var(--brand-yellow)] text-xl md:text-4xl">{totalScore} PTS</span>
+                            </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {errorMsg && (
+                        <div className="absolute top-40 left-1/2 -translate-x-1/2 bg-[var(--brand-primary)] text-white px-12 py-6 rounded-[2rem] font-bold text-3xl shadow-[0_15px_50px_rgba(255,0,122,0.8)] z-[300] flex items-center gap-6 pop-in border-4 border-white text-center">
+                            <AlertCircle size={48} className="shrink-0" />
+                            {errorMsg}
+                        </div>
+                    )}
+
+                    <div className="flex-grow relative overflow-hidden flex items-center justify-center w-full">
+                        {view === 'start' && (
+                            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-24 glass-panel p-6 md:p-12 lg:p-20 rounded-[3rem] lg:rounded-[4rem] border-4 border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.8)] pop-in w-11/12 max-w-7xl h-auto min-h-[70vh] my-6">
+                                
+                                <div className="flex flex-col items-center justify-center relative wiggle">
+                                    <AnimatedRobot size={260} className="drop-shadow-[0_0_50px_rgba(0,240,255,0.8)] z-10" />
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[var(--brand-secondary)]/20 rounded-full blur-3xl -z-10"></div>
+                                </div>
+
+                                <div className="flex flex-col items-center justify-center lg:border-l-4 border-white/10 lg:pl-24 text-center">
+                                    <h1 className="text-5xl md:text-7xl lg:text-[100px] font-black text-white leading-tight tracking-tighter neon-text uppercase text-center">
+                                        TuProfe20<br/>
+                                        <span className="text-[var(--brand-secondary)] text-6xl md:text-8xl lg:text-[120px]">LAB</span>
+                                    </h1>
+                                    
+                                    <div className="bg-[var(--brand-yellow)]/20 border-4 border-[var(--brand-yellow)] rounded-3xl px-12 py-4 mt-8 mb-12 shadow-[0_0_30px_rgba(255,230,0,0.4)] transform -rotate-2 max-w-2xl">
+                                        <p className="text-2xl md:text-4xl font-black text-[var(--brand-yellow)] tracking-widest uppercase m-0 drop-shadow-md text-center leading-tight">
+                                            Fracciones e<br/>Igualdades Numéricas
+                                        </p>
+                                    </div>
+                                    
+                                    <Button onClick={handleStart} variant="primary" className="text-5xl px-20 py-8 shadow-[0_0_60px_rgba(255,0,122,0.6)] group">
+                                        ¡COMENZAR! <Play size={50} className="group-hover:translate-x-2 transition-transform" />
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {view === 'hub' && <MissionHub onSelectBlock={handleSelectBlock} completedBlocks={completedBlocks} />}
+                        {view === 'playing' && renderCurrentActivity()}
+                    </div>
+
+                    <SuccessModal isVisible={showCheck} onNext={handleNext} isBlockComplete={currentLevel === 7} />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<TuProfe20LabV2 />);
+    </script>
+</body>
+</html>
