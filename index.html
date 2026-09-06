@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TuProfe20 Lab fracciones equivalentes</title>
+    <title>TuProfe20 Lab Fracciones Equivalentes</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -14,12 +14,12 @@
     
     <style>
         :root {
-            --brand-primary: #FF007A; /* Magenta vivo */
-            --brand-secondary: #00F0FF; /* Cian brillante */
-            --brand-tertiary: #B000FF; /* Púrpura eléctrico */
-            --brand-yellow: #FFEA00; /* Amarillo solar */
-            --brand-green: #00FF66; /* Verde neón */
-            --brand-orange: #FF5500; /* Naranja vibrante */
+            --brand-primary: #FF007A;
+            --brand-secondary: #00F0FF;
+            --brand-tertiary: #B000FF;
+            --brand-yellow: #FFEA00;
+            --brand-green: #00FF66;
+            --brand-orange: #FF5500;
             --brand-bg: #0b061e;
         }
 
@@ -32,25 +32,19 @@
             align-items: center;
             min-height: 100vh;
             color: #fff;
-            overflow: hidden;
+            overflow-x: hidden;
             touch-action: manipulation;
         }
 
-        /* FONDO ESPACIAL SÚPER DINÁMICO */
         .space-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10;
-            /* Gradiente animado estilo nebulosa */
             background: linear-gradient(-45deg, #090a0f, #1a0b2e, #0f172a, #200030);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             overflow: hidden;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         
         .milky-way {
             position: absolute; width: 200vw; height: 200vh; top: -50vh; left: -50vw;
@@ -66,12 +60,18 @@
         }
 
         .star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle linear infinite alternate; box-shadow: 0 0 10px #fff; }
-        
         .floating-math { position: absolute; font-weight: 900; font-family: 'Nunito', sans-serif; opacity: 0.15; animation: floatMath linear infinite; user-select: none; pointer-events: none; }
 
         @keyframes rotateMilkyWay { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.5); box-shadow: 0 0 15px #fff, 0 0 5px var(--brand-secondary); } }
         @keyframes floatMath { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-10vh) rotate(360deg); } }
+
+        @keyframes blink { 0%, 96%, 100% { transform: scaleY(1); } 98% { transform: scaleY(0.1); } }
+        @keyframes waveL { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-15deg); } }
+        @keyframes waveR { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(15deg); } }
+        .anim-blink { transform-origin: center; animation: blink 4s infinite; }
+        .anim-wave-l { transform-origin: 20px 50px; animation: waveL 3s ease-in-out infinite; }
+        .anim-wave-r { transform-origin: 100px 50px; animation: waveR 3s ease-in-out infinite; }
 
         input[type="number"] { -moz-appearance: textfield; }
         input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -94,12 +94,12 @@
         @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 15px #fff; transform: scale(1.05); border-color: #fff; } 50% { box-shadow: 0 0 40px #fff; transform: scale(1.1); border-color: var(--brand-secondary); } }
         @keyframes wiggle { 0%, 100% { transform: rotate(0deg) translateY(0); } 25% { transform: rotate(-5deg) translateY(-10px); } 75% { transform: rotate(5deg) translateY(5px); } }
 
-        .horizontal-layout { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; max-width: 1400px; height: 100%; padding: 2rem; gap: 4rem; margin: 0 auto; }
-        .robot-pane { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
-        .interaction-pane { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; flex: 1; }
+        .horizontal-layout { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; max-width: 1500px; height: 100%; padding: 1rem md:padding: 2rem; gap: 2rem lg:gap: 4rem; margin: 0 auto; }
+        .robot-pane { width: 100%; max-width: 320px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
+        .interaction-pane { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem md:gap: 2.5rem; flex: 1; width: 100%; }
 
         .draggable-item { cursor: pointer; transition: all 0.3s ease; user-select: none; }
-        .draggable-item:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
+        .draggable-item:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.6); }
         .dropzone { transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(0,0,0,0.3); }
         .dropzone.active { border-color: var(--brand-green); background: rgba(0, 255, 102, 0.15); animation: pulseGlow 1.5s infinite; }
         .dropzone.filled { border-style: solid; border-color: var(--brand-yellow); background: rgba(255, 234, 0, 0.15); }
@@ -107,23 +107,19 @@
         .confetti-piece { position: absolute; width: 14px; height: 28px; opacity: 0; animation: fall linear forwards; }
         @keyframes fall { 0% { opacity: 1; top: -10%; transform: rotate(0deg); } 100% { opacity: 0; top: 110%; transform: rotate(720deg); } }
 
-        .progress-track { height: 12px; background: rgba(255,255,255,.15); border-radius: 999px; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--brand-primary), var(--brand-yellow)); transition: width .5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 20px var(--brand-primary); }
-        .icon-button { width: 3.5rem; height: 3.5rem; border-radius: 1rem; display: grid; place-items: center; background: rgba(30,41,59,.9); border: 2px solid rgba(255,255,255,.2); transition: all 0.3s ease; }
+        .icon-button { width: 3rem; height: 3rem; border-radius: 1rem; display: grid; place-items: center; background: rgba(30,41,59,.9); border: 2px solid rgba(255,255,255,.2); transition: all 0.3s ease; }
+        @media (min-width: 768px) { .icon-button { width: 3.5rem; height: 3.5rem; } }
         .icon-button:hover { background: var(--brand-primary); border-color: white; transform: scale(1.1) rotate(5deg); }
         
-        /* Ocultar barra scroll */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
             body { overflow: auto; }
             .app-container { min-height: 100dvh; height: auto; }
-            .horizontal-layout { flex-direction: column; height: auto; min-height: 100%; padding: 1rem; gap: 1.25rem; overflow-y: auto; }
-            .robot-pane { width: 100%; max-width: 560px; }
-            .robot-pane svg { width: 86px; height: 86px; }
+            .horizontal-layout { flex-direction: column; height: auto; min-height: 100%; padding: 1rem; gap: 1.25rem; overflow-y: auto; overflow-x: hidden;}
+            .robot-pane { width: 100%; max-width: 400px; }
             .interaction-pane { width: 100%; gap: 1rem; }
-            .interaction-pane > * { min-width: 0 !important; width: 100% !important; padding: 1.25rem !important; border-radius: 2rem !important; }
             .bouncy-hover:hover { transform: none; }
         }
     </style>
@@ -142,6 +138,7 @@
         const AlertCircle = (p) => <IconBase {...p}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></IconBase>;
         const Check = (p) => <IconBase {...p}><polyline points="20 6 9 17 4 12"/></IconBase>;
         const ArrowLeft = (p) => <IconBase {...p}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></IconBase>;
+        const Lock = (p) => <IconBase {...p}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></IconBase>;
         const Rocket = (p) => <svg width={p.size||24} height={p.size||24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={p.className}><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>;
 
         const audioCtx = typeof window !== 'undefined' ? new (window.AudioContext || window.webkitAudioContext)() : null;
@@ -179,22 +176,21 @@
         };
         const useSound = (soundKey) => useCallback(() => { if (soundEnabled && soundLibrary[soundKey]) soundLibrary[soundKey](); }, [soundKey]);
 
-        // Componentes Generales y Fondo Dinámico
         const DynamicBackground = () => {
             const [stars, setStars] = useState([]);
             const [symbols, setSymbols] = useState([]);
             
             useEffect(() => {
-                const s = Array.from({length: 120}).map((_, i) => ({
+                const s = Array.from({length: 80}).map((_, i) => ({
                     id: i, left: `${Math.random() * 100}vw`, top: `${Math.random() * 100}vh`,
                     size: `${Math.random() * 3 + 1}px`, animDuration: `${2 + Math.random() * 5}s`, animDelay: `-${Math.random() * 5}s`
                 }));
                 setStars(s);
 
                 const mathSyms = ['½', '¾', '×', '÷', '+', '=', '¼'];
-                const sym = Array.from({length: 15}).map((_, i) => ({
+                const sym = Array.from({length: 10}).map((_, i) => ({
                     id: i, char: mathSyms[Math.floor(Math.random() * mathSyms.length)],
-                    left: `${Math.random() * 100}vw`, fontSize: `${Math.random() * 60 + 40}px`,
+                    left: `${Math.random() * 100}vw`, fontSize: `${Math.random() * 40 + 30}px`,
                     animDuration: `${20 + Math.random() * 20}s`, animDelay: `-${Math.random() * 20}s`,
                     color: ['var(--brand-primary)', 'var(--brand-secondary)', 'var(--brand-yellow)'][Math.floor(Math.random() * 3)]
                 }));
@@ -210,24 +206,32 @@
             );
         };
 
-        const AnimatedRobot = ({ size = 100, className = '' }) => (
-            <svg width={size} height={size} viewBox="0 0 100 100" className={`overflow-visible float-anim ${className}`} xmlns="http://www.w3.org/2000/svg">
-                <line x1="50" y1="25" x2="50" y2="10" stroke="#94A3B8" strokeWidth="4" strokeLinecap="round" />
-                <circle cx="50" cy="8" r="6" fill="var(--brand-yellow)" className="animate-pulse" filter="drop-shadow(0 0 5px var(--brand-yellow))" />
-                <rect x="15" y="25" width="70" height="55" rx="20" fill="#1E293B" stroke="var(--brand-secondary)" strokeWidth="4" filter="drop-shadow(0 0 10px var(--brand-secondary))" />
-                <rect x="25" y="32" width="50" height="35" rx="12" fill="#0F172A" />
-                <circle cx="37" cy="45" r="7" fill="var(--brand-primary)" />
-                <circle cx="63" cy="45" r="7" fill="var(--brand-primary)" />
-                <path d="M 40 58 Q 50 66 60 58" stroke="var(--brand-green)" strokeWidth="4" fill="none" strokeLinecap="round" filter="drop-shadow(0 0 5px var(--brand-green))" />
+        const AnimatedRobot = ({ size = 120, className = '' }) => (
+            <svg width={size} height={size} viewBox="0 0 120 120" className={`overflow-visible float-anim ${className}`} xmlns="http://www.w3.org/2000/svg">
+                <line x1="60" y1="20" x2="60" y2="5" stroke="#94A3B8" strokeWidth="5" strokeLinecap="round" />
+                <circle cx="60" cy="5" r="6" fill="#34d399" className="animate-pulse" filter="drop-shadow(0 0 6px #34d399)" />
+                <g className="anim-wave-l">
+                    <rect x="5" y="45" width="16" height="30" rx="8" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="4" transform="rotate(20 13 60)" />
+                </g>
+                <g className="anim-wave-r">
+                    <rect x="99" y="45" width="16" height="30" rx="8" fill="#CBD5E1" stroke="#94A3B8" strokeWidth="4" transform="rotate(-20 107 60)" />
+                </g>
+                <rect x="20" y="25" width="80" height="75" rx="20" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="6" />
+                <rect x="29" y="34" width="62" height="57" rx="12" fill="#1E293B" />
+                <g className="anim-blink">
+                    <path d="M 38 56 A 7 7 0 0 1 52 56 Z" fill="#34d399" />
+                    <path d="M 68 56 A 7 7 0 0 1 82 56 Z" fill="#34d399" />
+                </g>
+                <path d="M 46 62 C 46 82, 74 82, 74 62 Z" fill="#FF4D6D" />
             </svg>
         );
 
         const RobotGuide = ({ text, children }) => (
-            <div className="flex flex-col items-center gap-6 w-full relative z-20">
-                <div className="relative bg-slate-900/80 backdrop-blur-md p-4 rounded-[3rem] border-4 border-[var(--brand-secondary)] shadow-[0_0_30px_rgba(0,240,255,0.6)] wiggle">
-                    <AnimatedRobot size={150} />
+            <div className="flex flex-col items-center gap-4 w-full relative z-20">
+                <div className="relative bg-slate-900/80 backdrop-blur-md p-6 rounded-[3rem] border-4 border-[var(--brand-secondary)] shadow-[0_0_30px_rgba(0,240,255,0.6)] wiggle">
+                    <AnimatedRobot size={120} className="md:w-[150px] md:h-[150px]" />
                 </div>
-                <div className="glass-panel text-white p-6 rounded-3xl rounded-tl-none border-t-4 border-[var(--brand-tertiary)] font-bold text-xl relative pop-in text-center leading-relaxed w-full shadow-2xl flex flex-col items-center gap-4 bg-gradient-to-br from-slate-800 to-slate-900">
+                <div className="glass-panel text-white p-4 md:p-6 rounded-3xl rounded-tl-none border-t-4 border-[var(--brand-tertiary)] font-bold text-sm md:text-xl relative pop-in text-center leading-relaxed w-full shadow-2xl flex flex-col items-center gap-4 bg-gradient-to-br from-slate-800 to-slate-900">
                     {text}
                     {children}
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[12px] border-l-transparent border-b-[18px] border-b-[var(--brand-tertiary)] border-r-[12px] border-r-transparent"></div>
@@ -238,20 +242,20 @@
         const Button = ({ children, onClick, variant = 'primary', className = '' }) => {
             const playClick = useSound('click');
             const variants = { 
-                primary: "bg-gradient-to-r from-[var(--brand-primary)] to-[var(--brand-tertiary)] shadow-[0_8px_0_0_#500099] hover:brightness-125 text-white border-2 border-white/30", 
-                secondary: "bg-gradient-to-r from-[var(--brand-secondary)] to-[#0099ff] shadow-[0_8px_0_0_#005599] hover:brightness-125 text-white border-2 border-white/30" 
+                primary: "bg-gradient-to-r from-[var(--brand-primary)] to-[var(--brand-tertiary)] shadow-[0_6px_0_0_#500099] hover:brightness-125 text-white border-2 border-white/30", 
+                secondary: "bg-gradient-to-r from-[var(--brand-secondary)] to-[#0099ff] shadow-[0_6px_0_0_#005599] hover:brightness-125 text-white border-2 border-white/30" 
             };
-            return <button type="button" onClick={(e) => { playClick(); if(onClick) onClick(e); }} className={`bouncy-hover font-black py-4 px-10 rounded-full text-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-wider z-20 relative ${variants[variant]} ${className}`}>{children}</button>;
+            return <button type="button" onClick={(e) => { playClick(); if(onClick) onClick(e); }} className={`bouncy-hover font-black py-3 px-6 md:py-4 md:px-10 rounded-full text-lg md:text-2xl transition-all flex items-center justify-center gap-2 md:gap-3 uppercase tracking-wider z-20 relative ${variants[variant]} ${className}`}>{children}</button>;
         };
 
         const FractionDisplay = ({ num, den }) => (
-            <div className="flex flex-col items-center justify-center font-black text-white px-4">
-                <span className="text-5xl md:text-6xl border-b-4 border-white pb-1 px-4 text-center min-w-[3ch] drop-shadow-md">{num}</span>
-                <span className="text-5xl md:text-6xl pt-1 px-4 text-center min-w-[3ch] drop-shadow-md">{den}</span>
+            <div className="flex flex-col items-center justify-center font-black text-white px-2 md:px-4">
+                <span className="text-3xl md:text-6xl border-b-2 md:border-b-4 border-white pb-1 px-2 md:px-4 text-center min-w-[2ch] md:min-w-[3ch] drop-shadow-md">{num}</span>
+                <span className="text-3xl md:text-6xl pt-1 px-2 md:px-4 text-center min-w-[2ch] md:min-w-[3ch] drop-shadow-md">{den}</span>
             </div>
         );
 
-        const FractionGraphic = ({ n, d, theme = 'default' }) => {
+        const FractionGraphic = ({ n, d, theme = 'default', sizeClass = "w-full md:w-56 h-12 md:h-16" }) => {
             const wholes = Math.ceil(n / d) || 1;
             const getThemeColors = () => {
                 if(theme === 'chocolate') return { bg: 'bg-[#3E2723]', fill: 'bg-[#5D4037]', border: 'border-[#1b100e]' };
@@ -261,12 +265,12 @@
             const colors = getThemeColors();
 
             return (
-                <div className="flex flex-wrap gap-4 justify-center items-center">
+                <div className="flex flex-wrap gap-2 md:gap-4 justify-center items-center w-full">
                     {Array.from({length: wholes}).map((_, wIdx) => (
-                        <div key={wIdx} className={`flex border-4 ${colors.border} rounded-xl overflow-hidden ${colors.bg} shadow-[0_10px_20px_rgba(0,0,0,0.5)]`}>
+                        <div key={wIdx} className={`flex border-2 md:border-4 ${colors.border} rounded-lg md:rounded-xl overflow-hidden ${colors.bg} shadow-[0_5px_15px_rgba(0,0,0,0.5)] ${sizeClass}`}>
                             {Array.from({length: d}).map((_, dIdx) => {
                                 const isShaded = (wIdx * d) + dIdx < n;
-                                return <div key={dIdx} className={`w-8 h-12 border-r-2 ${colors.border} last:border-r-0 ${isShaded ? colors.fill : ''} ${isShaded ? 'shadow-[inset_0_0_10px_rgba(255,255,255,0.4)]' : ''}`}></div>;
+                                return <div key={dIdx} className={`flex-1 h-full border-r-[1px] md:border-r-2 ${colors.border} last:border-r-0 ${isShaded ? colors.fill : ''} ${isShaded ? 'shadow-[inset_0_0_10px_rgba(255,255,255,0.4)]' : ''}`}></div>;
                             })}
                         </div>
                     ))}
@@ -292,24 +296,24 @@
 
             const handleTickClick = (idx) => { playPlace(); setMarkerPos(idx); };
             const check = () => {
-                if (markerPos === null) { onError("¡Toca una marca en la segunda recta para colocar tu láser!"); return; }
+                if (markerPos === null) { onError("¡Toca una marca en la segunda recta para colocar tu láser!", false); return; }
                 if (markerPos === data.correctN) onComplete();
-                else onError("¡Uy! Ese punto no es equivalente. Fíjate que deben estar alineados como un rayo láser.");
+                else onError("El láser no está perfectamente derecho. Esas fracciones no son equivalentes.");
             };
 
-            const maxVal = 1;
             const pos1 = (data.f1.n / data.f1.d) * 100;
+            const pos2 = markerPos !== null ? (markerPos / data.d2) * 100 : null;
 
             const NumberLineFixed = ({ frac }) => (
-                <div className="w-full relative h-16 flex items-center mb-12">
-                    <div className="absolute top-1/2 left-0 w-full h-2 bg-slate-500 rounded-full -translate-y-1/2"></div>
+                <div className="w-full relative h-12 md:h-16 flex items-center">
+                    <div className="absolute top-1/2 left-0 w-full h-1 md:h-2 bg-slate-500 rounded-full -translate-y-1/2"></div>
                     {Array.from({ length: frac.d + 1 }).map((_, i) => (
-                        <div key={i} className="absolute top-1/2 w-1 h-8 bg-slate-300 -translate-y-1/2" style={{ left: `${(i / frac.d) * 100}%` }}>
-                            <span className="absolute top-10 left-1/2 -translate-x-1/2 text-lg font-bold text-slate-300">{i}/{frac.d}</span>
+                        <div key={i} className="absolute top-1/2 w-0.5 md:w-1 h-6 md:h-8 bg-slate-300" style={{ left: `${(i / frac.d) * 100}%`, transform: 'translate(-50%, -50%)' }}>
+                            <span className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 text-xs md:text-lg font-bold text-slate-300">{i}/{frac.d}</span>
                         </div>
                     ))}
-                    <div className="absolute top-1/2 w-2 h-12 bg-[var(--brand-primary)] -translate-y-1/2 z-10 shadow-[0_0_15px_var(--brand-primary)]" style={{ left: `${pos1}%` }}>
-                        <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[var(--brand-primary)] text-white px-4 py-2 rounded-xl font-black text-2xl shadow-lg border-2 border-white/50">
+                    <div className="absolute top-1/2 w-[4px] md:w-[8px] h-8 md:h-12 bg-[var(--brand-primary)] z-10 shadow-[0_0_15px_var(--brand-primary)]" style={{ left: `${pos1}%`, transform: 'translate(-50%, -50%)' }}>
+                        <div className="absolute -top-10 md:-top-14 left-1/2 -translate-x-1/2 bg-[var(--brand-primary)] text-white px-2 py-1 md:px-4 md:py-2 rounded-lg md:rounded-xl font-black text-sm md:text-2xl shadow-lg border-2 border-white/50 flex items-center justify-center">
                             {frac.n}/{frac.d}
                         </div>
                     </div>
@@ -317,20 +321,20 @@
             );
 
             const NumberLineInteractive = ({ divisions }) => (
-                <div className="w-full relative h-16 flex items-center mt-12 mb-8">
-                    <div className="absolute top-1/2 left-0 w-full h-2 bg-slate-500 rounded-full -translate-y-1/2"></div>
+                <div className="w-full relative h-12 md:h-16 flex items-center">
+                    <div className="absolute top-1/2 left-0 w-full h-1 md:h-2 bg-slate-500 rounded-full -translate-y-1/2"></div>
                     {Array.from({ length: divisions + 1 }).map((_, i) => (
                         <div key={i} onClick={() => handleTickClick(i)} 
-                             className="absolute top-1/2 w-8 h-16 bg-transparent cursor-pointer -translate-y-1/2 group flex justify-center items-center z-20" 
+                             className="absolute top-1/2 w-6 md:w-8 h-12 md:h-16 bg-transparent cursor-pointer group flex justify-center items-center z-20" 
                              style={{ left: `${(i / divisions) * 100}%`, transform: 'translate(-50%, -50%)' }}>
-                            <div className={`w-1 h-8 transition-colors ${markerPos === i ? 'bg-[var(--brand-yellow)] h-12' : 'bg-slate-300 group-hover:bg-white group-hover:h-12 shadow-[0_0_10px_rgba(255,255,255,0.5)]'}`}></div>
-                            <span className="absolute top-[110%] left-1/2 -translate-x-1/2 text-lg font-bold text-slate-300">{i}/{divisions}</span>
+                            <div className={`w-0.5 md:w-1 h-6 md:h-8 transition-colors ${markerPos === i ? 'bg-[var(--brand-yellow)] h-8 md:h-12' : 'bg-slate-300 group-hover:bg-white group-hover:h-8 md:group-hover:h-12 shadow-[0_0_10px_rgba(255,255,255,0.5)]'}`}></div>
+                            <span className="absolute top-[110%] left-1/2 -translate-x-1/2 text-xs md:text-lg font-bold text-slate-300">{i}/{divisions}</span>
                         </div>
                     ))}
                     {markerPos !== null && (
-                        <div className="absolute top-1/2 w-2 h-12 bg-[var(--brand-yellow)] -translate-y-1/2 z-10 shadow-[0_0_25px_var(--brand-yellow)] pop-in pointer-events-none" 
-                             style={{ left: `${(markerPos / divisions) * 100}%` }}>
-                            <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-[var(--brand-yellow)] text-slate-900 px-4 py-2 rounded-xl font-black text-2xl shadow-lg border-2 border-white">
+                        <div className="absolute top-1/2 w-[4px] md:w-[8px] h-8 md:h-12 bg-[var(--brand-yellow)] z-10 shadow-[0_0_25px_var(--brand-yellow)] pop-in pointer-events-none" 
+                             style={{ left: `${(markerPos / divisions) * 100}%`, transform: 'translate(-50%, -50%)' }}>
+                            <div className="absolute -bottom-10 md:-bottom-14 left-1/2 -translate-x-1/2 bg-[var(--brand-yellow)] text-slate-900 px-2 py-1 md:px-4 md:py-2 rounded-lg md:rounded-xl font-black text-sm md:text-2xl shadow-lg border-2 border-white flex items-center justify-center">
                                 {markerPos}/{divisions}
                             </div>
                         </div>
@@ -341,20 +345,33 @@
             return (
                 <div className="horizontal-layout">
                     <div className="robot-pane">
-                        <RobotGuide text="¡Encuentra el punto de salto hiperespacial! Haz clic en la marca de la recta de abajo que represente exactamente la misma cantidad." />
-                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">¡Activar Láser!</Button>
+                        <RobotGuide text="¡Conecta el rayo láser! Toca la marca en la recta inferior que se alinee directamente con la fracción inicial." />
+                        <Button onClick={check} variant="primary" className="mt-6 md:mt-12 w-full text-xl md:text-3xl py-4 md:py-6">¡Activar Láser!</Button>
                     </div>
                     <div className="interaction-pane">
-                        <div className="glass-panel p-10 rounded-[3rem] border-4 border-[var(--brand-tertiary)] shadow-[0_0_40px_rgba(176,0,255,0.3)] flex flex-col items-center justify-center gap-4 w-full min-w-[700px] bg-gradient-to-b from-slate-900/90 to-slate-800/90">
-                            <div className="w-full px-12 relative py-8">
-                                <span className="text-xl font-black text-[var(--brand-primary)] tracking-widest uppercase mb-4 block drop-shadow-md">Posición Inicial</span>
-                                <NumberLineFixed frac={data.f1} />
-                                <div className="border-t-2 border-dashed border-white/20 my-10 w-full"></div>
-                                <span className="text-xl font-black text-[var(--brand-yellow)] tracking-widest uppercase mt-4 block drop-shadow-md">Apunta tu láser aquí</span>
-                                <NumberLineInteractive divisions={data.d2} />
-                                {markerPos !== null && (
-                                    <div className="absolute top-12 bottom-12 w-0 border-l-4 border-dotted border-[var(--brand-green)] z-0 pointer-events-none pop-in shadow-[0_0_15px_var(--brand-green)]" style={{ left: `calc(${pos1}% + 48px)` }}></div>
-                                )}
+                        <div className="glass-panel p-6 md:p-10 rounded-[2rem] md:rounded-[3rem] border-4 border-[var(--brand-tertiary)] shadow-[0_0_40px_rgba(176,0,255,0.3)] flex flex-col items-center justify-center w-full max-w-4xl bg-gradient-to-b from-slate-900/90 to-slate-800/90">
+                            <div className="w-full px-4 md:px-12 relative py-4 md:py-8">
+                                <span className="text-sm md:text-xl font-black text-[var(--brand-primary)] tracking-widest uppercase mb-4 block drop-shadow-md text-center md:text-left">Posición Inicial</span>
+                                
+                                <div className="relative w-full">
+                                    <NumberLineFixed frac={data.f1} />
+                                    
+                                    <div className="h-20 md:h-28 w-full flex items-center justify-center relative z-0">
+                                        <div className="border-t-2 border-dashed border-white/20 w-full"></div>
+                                        <span className="absolute bg-slate-900/80 px-4 py-1 rounded-full text-xs md:text-sm text-slate-400 font-bold uppercase tracking-widest">Alineamiento Láser</span>
+                                    </div>
+                                    
+                                    <NumberLineInteractive divisions={data.d2} />
+                                    
+                                    {/* SVG LÁSER VISUAL */}
+                                    {markerPos !== null && (
+                                        <svg className="absolute top-6 md:top-8 bottom-6 md:bottom-8 left-0 w-full pointer-events-none z-10 pop-in" style={{ overflow: 'visible' }}>
+                                            <line x1={`${pos1}%`} y1="0" x2={`${pos2}%`} y2="100%" stroke="var(--brand-yellow)" strokeWidth="4" strokeDasharray="10 10" className="drop-shadow-[0_0_12px_rgba(255,234,0,1)] animate-pulse" />
+                                        </svg>
+                                    )}
+                                </div>
+                                
+                                <span className="text-sm md:text-xl font-black text-[var(--brand-yellow)] tracking-widest uppercase mt-6 block drop-shadow-md text-center md:text-left">Apunta tu láser aquí</span>
                             </div>
                         </div>
                     </div>
@@ -370,39 +387,35 @@
             const check = (opt) => {
                 playPlace();
                 if (opt.n === data.correct.n && opt.d === data.correct.d) onComplete();
-                else onError("¡Ups! Recuerda que aunque tengan cortes distintos, deben tener la misma cantidad de área pintada.");
+                else onError("Fíjate bien: el área total pintada debe verse exactamente del mismo tamaño que el holograma base.");
             };
 
             return (
                 <div className="horizontal-layout">
                     <div className="robot-pane">
-                        <RobotGuide text="¡Escáner activado! Toca la opción que tenga pintada exactamente la misma porción que nuestra figura base." />
+                        <RobotGuide text="¡Escáner activado! Toca la opción que tenga el mismo tamaño de área pintada que la figura base." />
                     </div>
                     <div className="interaction-pane">
-                        <div className="glass-panel p-12 rounded-[4rem] border-4 border-[var(--brand-secondary)] shadow-[0_0_40px_rgba(0,240,255,0.3)] flex flex-col items-center justify-center gap-10 w-full min-w-[600px] bg-gradient-to-br from-slate-900 to-slate-800">
+                        <div className="glass-panel p-4 md:p-8 rounded-[2rem] md:rounded-[4rem] border-4 border-[var(--brand-secondary)] shadow-[0_0_40px_rgba(0,240,255,0.3)] flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-10 w-full max-w-5xl bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
                             
-                            <div className="flex flex-col items-center bg-slate-800/80 p-6 rounded-[3rem] w-full border-2 border-[var(--brand-secondary)] shadow-inner">
-                                <span className="text-xl font-black text-[var(--brand-secondary)] mb-6 uppercase tracking-widest border-b-2 border-slate-500 pb-2 drop-shadow-md">Holograma Base</span>
-                                <div className="flex flex-row items-center justify-center gap-12 w-full">
+                            <div className="flex flex-col items-center bg-slate-800/80 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-2 border-[var(--brand-secondary)] shadow-inner w-full lg:w-auto">
+                                <span className="text-sm md:text-xl font-black text-[var(--brand-secondary)] mb-4 md:mb-6 uppercase tracking-widest border-b-2 border-slate-500 pb-2 drop-shadow-md">Holograma Base</span>
+                                <div className="flex flex-col items-center gap-4 md:gap-6 w-full">
                                     <FractionDisplay num={data.base.n} den={data.base.d} />
-                                    <div className="scale-125 transform">
-                                        <FractionGraphic n={data.base.n} d={data.base.d} theme="pizza" />
-                                    </div>
+                                    <FractionGraphic n={data.base.n} d={data.base.d} theme="pizza" sizeClass="w-full max-w-[280px] h-12 md:h-20" />
                                 </div>
                             </div>
                             
-                            <div className="text-5xl font-black text-[var(--brand-yellow)] drop-shadow-[0_0_10px_rgba(255,234,0,0.8)] animate-pulse">=</div>
+                            <div className="text-5xl md:text-7xl font-black text-[var(--brand-yellow)] drop-shadow-[0_0_15px_rgba(255,234,0,0.8)] animate-pulse shrink-0 rotate-90 lg:rotate-0">=</div>
                             
-                            <div className="flex flex-row flex-wrap justify-center gap-8 w-full">
+                            <div className="flex flex-col justify-center gap-3 md:gap-5 w-full lg:w-auto">
                                 {data.options.map((opt, i) => (
                                     <div key={i} onClick={() => check(opt)}
-                                         className="draggable-item bg-slate-800 p-6 rounded-[2rem] border-4 border-slate-500 flex flex-row items-center justify-center gap-6 hover:border-[var(--brand-primary)] hover:bg-slate-700 shadow-xl group transition-all">
-                                        <div className="bg-slate-900 px-4 py-2 rounded-xl text-3xl font-black text-white group-hover:text-[var(--brand-primary)] transition-colors">
+                                         className="draggable-item bg-slate-800 p-3 md:p-4 rounded-xl md:rounded-[2rem] border-2 md:border-4 border-slate-500 flex flex-row items-center gap-4 md:gap-6 hover:border-[var(--brand-primary)] hover:bg-slate-700 shadow-xl group transition-all w-full lg:w-[350px]">
+                                        <div className="bg-slate-900 px-3 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xl md:text-3xl font-black text-white group-hover:text-[var(--brand-primary)] transition-colors min-w-[60px] md:min-w-[80px] text-center shrink-0">
                                             {opt.n}/{opt.d}
                                         </div>
-                                        <div className="scale-90 group-hover:scale-100 transition-transform">
-                                            <FractionGraphic n={opt.n} d={opt.d} theme="default" />
-                                        </div>
+                                        <FractionGraphic n={opt.n} d={opt.d} theme="default" sizeClass="w-full h-8 md:h-12" />
                                     </div>
                                 ))}
                             </div>
@@ -434,7 +447,7 @@
             const handleRemove = (zone, e) => { e.stopPropagation(); playPop(); setPlaced({ ...placed, [zone]: null }); };
 
             const check = () => {
-                if (placed.n === null || placed.d === null) { onError("¡Carga ambos números arrastrándolos a las cajas!"); return; }
+                if (placed.n === null || placed.d === null) { onError("¡Carga ambos números arrastrándolos a las cajas!", false); return; }
                 if (placed.n === data.ansN && placed.d === data.ansD) onComplete();
                 else onError(`Error de cálculo. Debes ${data.op === 'x' ? 'multiplicar' : 'dividir'} ambos números por ${data.factor}.`);
             };
@@ -442,61 +455,61 @@
             return (
                 <div className="horizontal-layout">
                     <div className="robot-pane">
-                        <RobotGuide text={`¡Motor de equivalencia! Arrastra los números para ${data.op === 'x' ? 'multiplicar' : 'dividir'} arriba y abajo por el mismo factor.`} />
-                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Analizar</Button>
+                        <RobotGuide text={`¡Motor de equivalencia! Selecciona y coloca los números para ${data.op === 'x' ? 'multiplicar' : 'dividir'} arriba y abajo.`} />
+                        <Button onClick={check} variant="primary" className="mt-6 md:mt-12 w-full text-xl md:text-3xl py-4 md:py-6">Analizar</Button>
                     </div>
                     
                     <div className="interaction-pane">
-                        <div className="flex flex-col gap-8 w-full min-w-[650px]">
-                            <div className="glass-panel py-16 px-10 rounded-[4rem] border-4 border-[var(--brand-primary)] flex flex-row items-center justify-center gap-8 shadow-[0_0_50px_rgba(255,0,122,0.3)] bg-gradient-to-b from-slate-900 to-slate-800">
+                        <div className="flex flex-col gap-6 md:gap-8 w-full max-w-4xl">
+                            <div className="glass-panel py-8 px-4 md:py-16 md:px-10 rounded-[2rem] md:rounded-[4rem] border-4 border-[var(--brand-primary)] flex flex-row items-center justify-center gap-4 md:gap-8 shadow-[0_0_50px_rgba(255,0,122,0.3)] bg-gradient-to-b from-slate-900 to-slate-800 scale-90 md:scale-100 origin-center">
                                 
                                 <FractionDisplay num={data.origN} den={data.origD} />
                                 
-                                <div className="flex flex-col items-center justify-between h-60 relative w-44">
-                                    <div className="absolute -top-12 flex flex-col items-center">
-                                        <span className="text-[var(--brand-secondary)] font-black text-2xl bg-slate-900 px-6 py-2 rounded-full border-2 border-[var(--brand-secondary)] mb-2 shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                                <div className="flex flex-col items-center justify-between h-40 md:h-60 relative w-24 md:w-44 shrink-0">
+                                    <div className="absolute -top-8 md:-top-12 flex flex-col items-center">
+                                        <span className="text-[var(--brand-secondary)] font-black text-sm md:text-2xl bg-slate-900 px-3 py-1 md:px-6 md:py-2 rounded-full border-2 border-[var(--brand-secondary)] mb-1 md:mb-2 shadow-[0_0_15px_rgba(0,240,255,0.4)] whitespace-nowrap">
                                             {data.op === 'x' ? '×' : '÷'} {data.factor}
                                         </span>
-                                        <svg width="120" height="40" viewBox="0 0 120 40" className="overflow-visible">
+                                        <svg width="100%" height="30" viewBox="0 0 120 40" className="overflow-visible w-20 md:w-[120px]">
                                             <path d="M 0,25 Q 60,-15 110,25" fill="transparent" stroke="var(--brand-secondary)" strokeWidth="5" />
                                             <polygon points="105,12 120,25 105,38" fill="var(--brand-secondary)" />
                                         </svg>
                                     </div>
 
-                                    <div className="text-[var(--brand-yellow)] text-7xl font-black m-auto drop-shadow-[0_0_15px_rgba(255,234,0,0.5)]">=</div>
+                                    <div className="text-[var(--brand-yellow)] text-5xl md:text-7xl font-black m-auto drop-shadow-[0_0_15px_rgba(255,234,0,0.5)]">=</div>
 
-                                    <div className="absolute -bottom-12 flex flex-col items-center">
-                                        <svg width="120" height="40" viewBox="0 0 120 40" className="overflow-visible">
+                                    <div className="absolute -bottom-8 md:-bottom-12 flex flex-col items-center">
+                                        <svg width="100%" height="30" viewBox="0 0 120 40" className="overflow-visible w-20 md:w-[120px]">
                                             <path d="M 0,15 Q 60,55 110,15" fill="transparent" stroke="var(--brand-secondary)" strokeWidth="5" />
                                             <polygon points="105,2 120,15 105,28" fill="var(--brand-secondary)" />
                                         </svg>
-                                        <span className="text-[var(--brand-secondary)] font-black text-2xl bg-slate-900 px-6 py-2 rounded-full border-2 border-[var(--brand-secondary)] mt-2 shadow-[0_0_15px_rgba(0,240,255,0.4)]">
+                                        <span className="text-[var(--brand-secondary)] font-black text-sm md:text-2xl bg-slate-900 px-3 py-1 md:px-6 md:py-2 rounded-full border-2 border-[var(--brand-secondary)] mt-1 md:mt-2 shadow-[0_0_15px_rgba(0,240,255,0.4)] whitespace-nowrap">
                                             {data.op === 'x' ? '×' : '÷'} {data.factor}
                                         </span>
                                     </div>
                                 </div>
                                 
-                                <div className="flex flex-col items-center gap-4">
+                                <div className="flex flex-col items-center gap-2 md:gap-4 shrink-0">
                                     <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => onDrop(e, 'n')} onClick={() => handleDropClick('n')} 
-                                         className={`w-32 h-32 rounded-3xl dropzone border-4 border-dashed flex items-center justify-center ${selected && !placed.n ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed.n ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
+                                         className={`w-20 h-20 md:w-32 md:h-32 rounded-xl md:rounded-3xl dropzone border-2 md:border-4 border-dashed flex items-center justify-center ${selected && !placed.n ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed.n ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
                                         {placed.n ? (
-                                            <div onClick={(e) => handleRemove('n', e)} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-2xl flex items-center justify-center text-7xl font-black pop-in cursor-pointer shadow-[0_0_20px_rgba(255,234,0,0.8)]">{placed.n}</div>
-                                        ) : <span className="text-slate-400 font-bold text-xl animate-pulse">Arrastra</span>}
+                                            <div onClick={(e) => handleRemove('n', e)} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-lg md:rounded-2xl flex items-center justify-center text-4xl md:text-7xl font-black pop-in cursor-pointer shadow-[0_0_20px_rgba(255,234,0,0.8)]">{placed.n}</div>
+                                        ) : <span className="text-slate-400 font-bold text-xs md:text-xl animate-pulse text-center">Toca<br/>aquí</span>}
                                     </div>
-                                    <div className="w-44 h-5 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.8)]"></div>
+                                    <div className="w-24 md:w-44 h-2 md:h-5 bg-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.8)]"></div>
                                     <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => onDrop(e, 'd')} onClick={() => handleDropClick('d')} 
-                                         className={`w-32 h-32 rounded-3xl dropzone border-4 border-dashed flex items-center justify-center ${selected && !placed.d ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed.d ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
+                                         className={`w-20 h-20 md:w-32 md:h-32 rounded-xl md:rounded-3xl dropzone border-2 md:border-4 border-dashed flex items-center justify-center ${selected && !placed.d ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed.d ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
                                         {placed.d ? (
-                                            <div onClick={(e) => handleRemove('d', e)} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-2xl flex items-center justify-center text-7xl font-black pop-in cursor-pointer shadow-[0_0_20px_rgba(255,234,0,0.8)]">{placed.d}</div>
-                                        ) : <span className="text-slate-400 font-bold text-xl animate-pulse">Arrastra</span>}
+                                            <div onClick={(e) => handleRemove('d', e)} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-lg md:rounded-2xl flex items-center justify-center text-4xl md:text-7xl font-black pop-in cursor-pointer shadow-[0_0_20px_rgba(255,234,0,0.8)]">{placed.d}</div>
+                                        ) : <span className="text-slate-400 font-bold text-xs md:text-xl animate-pulse text-center">Toca<br/>aquí</span>}
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex flex-row flex-wrap justify-center gap-6 bg-slate-800/90 p-8 rounded-[3rem] border-4 border-slate-600 w-full shadow-2xl">
+                            <div className="flex flex-row flex-wrap justify-center gap-4 md:gap-6 bg-slate-800/90 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-4 border-slate-600 w-full shadow-2xl">
                                 {data.pool.map((num, i) => (
                                     <div key={i} draggable onDragStart={(e) => onDragStart(e, num)} onClick={() => handleSelect(num)}
-                                         className={`draggable-item w-28 h-28 text-6xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_8px_0_0_rgba(0,0,0,0.6)] ${
+                                         className={`draggable-item w-16 h-16 md:w-28 md:h-28 text-3xl md:text-6xl font-black rounded-full flex items-center justify-center border-2 md:border-4 shadow-[0_6px_0_0_rgba(0,0,0,0.6)] ${
                                              selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-400'
                                          }`}
                                     >
@@ -511,6 +524,27 @@
         };
 
         // --- BLOQUE 4: El Número Faltante ---
+        const MiniArrow = ({ direction, op, factor, position }) => {
+            const isR2L = direction === 'R2L';
+            const isTop = position === 'top';
+            
+            return (
+                <div className={`absolute left-1/2 -translate-x-1/2 flex flex-col items-center opacity-50 pointer-events-none z-10 transition-opacity duration-300 w-24 md:w-40 ${isTop ? 'bottom-full mb-6 md:mb-16' : 'top-full mt-6 md:mt-16'}`}>
+                    <div className={`relative flex items-center justify-center w-full ${isR2L ? 'scale-x-[-1]' : ''} ${!isTop ? 'scale-y-[-1]' : ''}`}>
+                        <svg width="100%" height="100%" viewBox="0 0 220 40" preserveAspectRatio="none" className="overflow-visible h-6 md:h-10">
+                            <path d="M 10,35 Q 110,-10 210,35" fill="transparent" stroke="white" strokeWidth="3" strokeDasharray="8 8" />
+                            <polygon points="190,25 215,35 190,45" fill="white" />
+                        </svg>
+                    </div>
+                    <div className={`absolute left-1/2 -translate-x-1/2 ${isTop ? '-top-4 md:-top-6' : '-bottom-4 md:-bottom-6'}`}>
+                        <span className="text-white text-[10px] md:text-sm font-black bg-slate-900/90 px-2 md:px-3 py-1 rounded-full border border-white/30 whitespace-nowrap tracking-widest drop-shadow-md">
+                            {op} {factor}
+                        </span>
+                    </div>
+                </div>
+            )
+        };
+
         const ActMissingTerm = ({ data, onComplete, onError }) => {
             const [selected, setSelected] = useState(null);
             const [placed, setPlaced] = useState(null);
@@ -524,47 +558,74 @@
             const handleRemove = (e) => { e.stopPropagation(); playPop(); setPlaced(null); };
 
             const check = () => {
-                if (placed === null) { onError("¡Código incompleto! Arrastra un número a la caja vacía."); return; }
+                if (placed === null) { onError("¡Código incompleto! Selecciona un número.", false); return; }
                 if (placed === data.missingValue) onComplete();
-                else onError("Ese no es el número. Tip Jedi: ¡Multiplica en forma de X (aspa), los resultados deben ser iguales!");
+                else onError("Ese no es el número correcto. Recuerda la operación.");
             };
 
             const renderDropzone = () => (
                 <div onDragOver={(e) => e.preventDefault()} onDrop={onDrop} onClick={handleDropClick} 
-                    className={`w-36 h-36 rounded-3xl dropzone border-4 border-dashed bg-slate-900 ${selected && !placed ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed ? 'filled border-none bg-transparent' : ''} flex justify-center items-center`}>
+                    className={`w-20 h-20 md:w-36 md:h-36 rounded-2xl md:rounded-3xl dropzone border-2 md:border-4 border-dashed bg-slate-900 ${selected && !placed ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed ? 'filled border-none bg-transparent' : ''} flex justify-center items-center`}>
                     {placed ? (
-                        <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-3xl flex items-center justify-center text-7xl font-black pop-in shadow-[0_0_40px_rgba(255,234,0,0.8)] cursor-pointer">{placed}</div>
-                    ) : <span className="text-[var(--brand-yellow)] text-6xl font-black animate-pulse opacity-50">?</span>}
+                        <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-2xl md:rounded-3xl flex items-center justify-center text-4xl md:text-7xl font-black pop-in shadow-[0_0_30px_rgba(255,234,0,0.8)] cursor-pointer">{placed}</div>
+                    ) : <span className="text-[var(--brand-yellow)] text-3xl md:text-6xl font-black animate-pulse opacity-50">?</span>}
                 </div>
             );
+
+            const getHintDetails = () => {
+                const isRightComplete = data.pos === 1 || data.pos === 2;
+                const direction = isRightComplete ? 'R2L' : 'L2R';
+                
+                let knownComplete, knownIncomplete;
+                if (data.pos === 1 || data.pos === 3) {
+                    knownComplete = parseInt(isRightComplete ? data.d2 : data.d1);
+                    knownIncomplete = parseInt(isRightComplete ? data.d1 : data.d2);
+                } else {
+                    knownComplete = parseInt(isRightComplete ? data.n2 : data.n1);
+                    knownIncomplete = parseInt(isRightComplete ? data.n1 : data.n2);
+                }
+                
+                const op = knownComplete < knownIncomplete ? '×' : '÷';
+                const factor = knownComplete < knownIncomplete ? (knownIncomplete / knownComplete) : (knownComplete / knownIncomplete);
+                
+                return { direction, op, factor };
+            };
+
+            const { direction, op, factor } = getHintDetails();
 
             return (
                 <div className="horizontal-layout relative">
                     <div className="robot-pane">
-                        <RobotGuide text={`¡Rompecabezas activado! Encuentra el número que falta para que el valor de las fracciones sea idéntico.`} />
-                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Verificar</Button>
+                        <RobotGuide text={`¡Rompecabezas activado! Encuentra el número que falta.`} />
+                        <Button onClick={check} variant="primary" className="mt-6 md:mt-12 w-full text-xl md:text-3xl py-4 md:py-6">Verificar</Button>
                     </div>
                     
                     <div className="interaction-pane">
-                        <div className="flex flex-col items-center w-full min-w-[650px] gap-8">
-                            <div className="glass-panel p-16 rounded-[4rem] border-8 border-[var(--brand-yellow)] shadow-[0_0_60px_rgba(255,234,0,0.4)] w-full flex justify-center items-center gap-16 bg-gradient-to-t from-slate-900 to-slate-800">
-                                <div className="flex flex-col items-center gap-6">
-                                    {data.pos === 1 ? renderDropzone() : <span className="text-8xl font-black text-white px-6 py-4 drop-shadow-lg">{data.n1}</span>}
-                                    <div className="w-48 h-6 bg-[var(--brand-secondary)] rounded-full shadow-[0_0_20px_var(--brand-secondary)]"></div>
-                                    {data.pos === 2 ? renderDropzone() : <span className="text-8xl font-black text-white px-6 py-4 drop-shadow-lg">{data.d1}</span>}
+                        <div className="flex flex-col items-center w-full max-w-4xl gap-6 md:gap-8">
+                            <div className="glass-panel p-8 md:p-16 rounded-[2rem] md:rounded-[4rem] border-4 md:border-8 border-[var(--brand-yellow)] shadow-[0_0_40px_rgba(255,234,0,0.4)] w-full flex flex-row justify-center items-center gap-6 md:gap-16 bg-gradient-to-t from-slate-900 to-slate-800 scale-90 md:scale-100 origin-center">
+                                <div className="flex flex-col items-center gap-4 md:gap-6 z-20">
+                                    {data.pos === 1 ? renderDropzone() : <span className="text-5xl md:text-8xl font-black text-white px-2 md:px-6 py-2 md:py-4 drop-shadow-lg">{data.n1}</span>}
+                                    <div className="w-24 md:w-48 h-2 md:h-6 bg-[var(--brand-secondary)] rounded-full shadow-[0_0_20px_var(--brand-secondary)]"></div>
+                                    {data.pos === 2 ? renderDropzone() : <span className="text-5xl md:text-8xl font-black text-white px-2 md:px-6 py-2 md:py-4 drop-shadow-lg">{data.d1}</span>}
                                 </div>
-                                <div className="text-7xl font-black text-[var(--brand-yellow)] mx-4 drop-shadow-[0_0_15px_rgba(255,234,0,0.8)]">=</div>
-                                <div className="flex flex-col items-center gap-6">
-                                    {data.pos === 3 ? renderDropzone() : <span className="text-8xl font-black text-white px-6 py-4 drop-shadow-lg">{data.n2}</span>}
-                                    <div className="w-48 h-6 bg-[var(--brand-secondary)] rounded-full shadow-[0_0_20px_var(--brand-secondary)]"></div>
-                                    {data.pos === 4 ? renderDropzone() : <span className="text-8xl font-black text-white px-6 py-4 drop-shadow-lg">{data.d2}</span>}
+                                
+                                <div className="relative flex items-center justify-center mx-2 md:mx-8 shrink-0">
+                                    {!placed && <MiniArrow direction={direction} op={op} factor={factor} position="top" />}
+                                    <div className="text-5xl md:text-7xl font-black text-[var(--brand-yellow)] drop-shadow-[0_0_15px_rgba(255,234,0,0.8)] z-20">=</div>
+                                    {!placed && <MiniArrow direction={direction} op={op} factor={factor} position="bottom" />}
+                                </div>
+
+                                <div className="flex flex-col items-center gap-4 md:gap-6 z-20">
+                                    {data.pos === 3 ? renderDropzone() : <span className="text-5xl md:text-8xl font-black text-white px-2 md:px-6 py-2 md:py-4 drop-shadow-lg">{data.n2}</span>}
+                                    <div className="w-24 md:w-48 h-2 md:h-6 bg-[var(--brand-secondary)] rounded-full shadow-[0_0_20px_var(--brand-secondary)]"></div>
+                                    {data.pos === 4 ? renderDropzone() : <span className="text-5xl md:text-8xl font-black text-white px-2 md:px-6 py-2 md:py-4 drop-shadow-lg">{data.d2}</span>}
                                 </div>
                             </div>
 
-                            <div className="flex flex-row flex-wrap justify-center gap-8 bg-slate-800/90 p-8 rounded-[3rem] border-4 border-slate-600 w-full shadow-2xl">
+                            <div className="flex flex-row flex-wrap justify-center gap-4 md:gap-8 bg-slate-800/90 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-4 border-slate-600 w-full shadow-2xl">
                                 {data.pool.map((num, i) => (
                                     <div key={i} draggable onDragStart={(e) => onDragStart(e, num)} onClick={() => handleSelect(num)}
-                                         className={`draggable-item w-28 h-28 text-6xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_8px_0_0_rgba(0,0,0,0.6)] ${
+                                         className={`draggable-item w-16 h-16 md:w-28 md:h-28 text-3xl md:text-6xl font-black rounded-full flex items-center justify-center border-2 md:border-4 shadow-[0_6px_0_0_rgba(0,0,0,0.6)] ${
                                              selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-400 hover:bg-slate-600'
                                          }`}>
                                         {num}
@@ -594,67 +655,67 @@
             const handleRemove = (e) => { e.stopPropagation(); playPop(); setPlaced(null); };
 
             const check = () => {
-                if (shaded.size !== data.correctN) { onError(`¡Pinta exactamente ${data.correctN} porciones en la nave derecha para que la energía sea equivalente!`); return; }
-                if (placed === null) { onError("¡Falta el número de control! Arrastra el numerador que corresponde."); return; }
-                if (placed !== data.correctN) { onError("El número que colocaste no coincide con las partes que pintaste."); return; }
+                if (placed === null) { onError("¡Falta el número de control! Elige el numerador que corresponde.", false); return; }
+                if (shaded.size !== data.correctN || placed !== data.correctN) { 
+                    onError("¡La energía no está equilibrada! Verifica el número y las porciones pintadas."); 
+                    return; 
+                }
                 onComplete();
             };
 
             return (
                 <div className="horizontal-layout relative">
                     <div className="robot-pane">
-                        <RobotGuide text={`1. Haz clic en las celdas grises para pintarlas de energía cian.\n2. Arrastra el número correcto para completar tu panel.`} />
-                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Comprobar</Button>
+                        <RobotGuide text={`1. Toca celdas grises para pintarlas de cian.\n2. Toca el número correcto para completar.`} />
+                        <Button onClick={check} variant="primary" className="mt-6 md:mt-12 w-full text-xl md:text-3xl py-4 md:py-6">Comprobar</Button>
                     </div>
                     
                     <div className="interaction-pane">
-                        <div className="flex flex-col items-center w-full min-w-[750px] gap-8">
-                            <div className="glass-panel p-10 rounded-[4rem] border-8 border-[var(--brand-secondary)] shadow-[0_0_60px_rgba(0,240,255,0.3)] w-full flex flex-col justify-center items-center gap-12 bg-gradient-to-b from-slate-900 to-slate-800">
-                                <div className="flex flex-row items-center gap-10 w-full justify-center">
-                                    <div className="flex flex-col items-center gap-4 bg-slate-800/80 p-8 rounded-[3rem] border-2 border-slate-600 shadow-inner">
-                                        <span className="text-xl font-black text-slate-400 tracking-widest uppercase mb-2 drop-shadow-md">Nave Base</span>
-                                        <div className="flex flex-row items-center gap-10">
+                        <div className="flex flex-col items-center w-full max-w-4xl gap-6 md:gap-8">
+                            <div className="glass-panel p-4 md:p-10 rounded-[2rem] md:rounded-[4rem] border-4 md:border-8 border-[var(--brand-secondary)] shadow-[0_0_40px_rgba(0,240,255,0.3)] w-full flex flex-col justify-center items-center gap-6 md:gap-12 bg-gradient-to-b from-slate-900 to-slate-800">
+                                <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-10 w-full justify-center">
+                                    <div className="flex flex-col items-center gap-2 md:gap-4 bg-slate-800/80 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-2 border-slate-600 shadow-inner w-full lg:w-auto">
+                                        <span className="text-sm md:text-xl font-black text-slate-400 tracking-widest uppercase mb-1 drop-shadow-md">Nave Base</span>
+                                        <div className="flex flex-row items-center gap-4 md:gap-10 w-full">
                                             <FractionDisplay num={data.f1.n} den={data.f1.d} />
-                                            <div className="scale-125 transform"><FractionGraphic n={data.f1.n} d={data.f1.d} theme="pizza" /></div>
+                                            <FractionGraphic n={data.f1.n} d={data.f1.d} theme="pizza" sizeClass="w-full lg:w-64 h-12 md:h-20" />
                                         </div>
                                     </div>
                                     
-                                    <div className="text-7xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)]">=</div>
+                                    <div className="text-5xl md:text-7xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] rotate-90 lg:rotate-0 shrink-0">=</div>
                                     
-                                    <div className="flex flex-col items-center gap-4 bg-slate-800/80 p-8 rounded-[3rem] border-2 border-[var(--brand-secondary)] relative shadow-[0_0_30px_rgba(0,240,255,0.2)]">
-                                        <div className="absolute -top-6 animate-bounce z-10 whitespace-nowrap">
-                                            <span className="text-sm font-black text-slate-900 bg-[var(--brand-green)] tracking-widest uppercase px-6 py-2 rounded-full shadow-[0_0_20px_rgba(0,255,102,0.9)]">¡Pinta aquí!</span>
+                                    <div className="flex flex-col items-center gap-2 md:gap-4 bg-slate-800/80 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-2 border-[var(--brand-secondary)] relative shadow-[0_0_30px_rgba(0,240,255,0.2)] w-full lg:w-auto mt-4 lg:mt-0">
+                                        <div className="absolute -top-4 md:-top-6 animate-bounce z-10 whitespace-nowrap">
+                                            <span className="text-xs md:text-sm font-black text-slate-900 bg-[var(--brand-green)] tracking-widest uppercase px-3 py-1 md:px-6 md:py-2 rounded-full shadow-[0_0_20px_rgba(0,255,102,0.9)]">¡Pinta aquí!</span>
                                         </div>
-                                        <span className="text-xl font-black text-[var(--brand-secondary)] tracking-widest uppercase mb-2 drop-shadow-md">Nave Gemela</span>
-                                        <div className="flex flex-row items-center gap-10">
-                                            <div className="flex flex-col items-center justify-center font-black text-white px-4">
-                                                <div onDragOver={e=>e.preventDefault()} onDrop={onDrop} onClick={handleDropClick} className={`w-28 h-28 mb-2 rounded-2xl dropzone border-4 border-dashed flex items-center justify-center bg-slate-900 ${selected && !placed ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
+                                        <span className="text-sm md:text-xl font-black text-[var(--brand-secondary)] tracking-widest uppercase mb-1 drop-shadow-md">Nave Gemela</span>
+                                        <div className="flex flex-row items-center gap-4 md:gap-10 w-full">
+                                            <div className="flex flex-col items-center justify-center font-black text-white px-2 md:px-4 shrink-0">
+                                                <div onDragOver={e=>e.preventDefault()} onDrop={onDrop} onClick={handleDropClick} className={`w-16 h-16 md:w-28 md:h-28 mb-1 md:mb-2 rounded-xl md:rounded-2xl dropzone border-2 md:border-4 border-dashed flex items-center justify-center bg-slate-900 ${selected && !placed ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
                                                     {placed ? (
-                                                        <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-xl flex items-center justify-center text-7xl font-black pop-in cursor-pointer shadow-[0_0_25px_rgba(255,234,0,0.8)]">{placed}</div>
-                                                    ) : <span className="text-[var(--brand-yellow)] text-sm font-black text-center opacity-70">Arrastrar<br/>aquí</span>}
+                                                        <div onClick={handleRemove} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-lg md:rounded-xl flex items-center justify-center text-4xl md:text-7xl font-black pop-in cursor-pointer shadow-[0_0_25px_rgba(255,234,0,0.8)]">{placed}</div>
+                                                    ) : <span className="text-[var(--brand-yellow)] text-xs md:text-sm font-black text-center opacity-70">Tocar</span>}
                                                 </div>
-                                                <div className="w-32 h-4 bg-white rounded-full shadow-md"></div>
-                                                <span className="text-7xl pt-2">{data.f2.d}</span>
+                                                <div className="w-20 md:w-32 h-1 md:h-4 bg-white rounded-full shadow-md"></div>
+                                                <span className="text-4xl md:text-7xl pt-1 md:pt-2">{data.f2.d}</span>
                                             </div>
-                                            <div className="scale-125 transform">
-                                                <div className="flex border-4 border-[var(--brand-secondary)] rounded-xl overflow-hidden bg-slate-900 shadow-[0_0_30px_rgba(0,240,255,0.5)]">
-                                                    {Array.from({length: data.f2.d}).map((_, idx) => (
-                                                        <div key={idx} onClick={() => toggleShade(idx)} 
-                                                             className={`w-8 h-14 border-r-2 border-slate-700 last:border-r-0 cursor-pointer transition-colors hover:bg-white/40 ${shaded.has(idx) ? 'bg-[var(--brand-secondary)] shadow-[inset_0_0_20px_rgba(255,255,255,0.8)]' : ''}`}>
-                                                        </div>
-                                                    ))}
-                                                </div>
+                                            <div className="w-full lg:w-64 h-12 md:h-20 flex border-2 md:border-4 border-[var(--brand-secondary)] rounded-lg md:rounded-xl overflow-hidden bg-slate-900 shadow-[0_0_30px_rgba(0,240,255,0.5)]">
+                                                {Array.from({length: data.f2.d}).map((_, idx) => (
+                                                    <div key={idx} onClick={() => toggleShade(idx)} 
+                                                         className={`flex-1 h-full border-r-[1px] md:border-r-2 border-slate-700 last:border-r-0 cursor-pointer transition-colors hover:bg-white/40 ${shaded.has(idx) ? 'bg-[var(--brand-secondary)] shadow-[inset_0_0_20px_rgba(255,255,255,0.8)]' : ''}`}>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="flex flex-row flex-wrap justify-center gap-8 bg-slate-800/90 p-8 rounded-[3rem] border-4 border-slate-600 w-full shadow-2xl">
+                            <div className="flex flex-row flex-wrap justify-center gap-4 md:gap-8 bg-slate-800/90 p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-4 border-slate-600 w-full shadow-2xl">
                                 {data.pool.map((num, i) => (
                                     <div key={i} draggable onDragStart={(e)=>onDragStart(e, num)} onClick={() => handleSelect(num)}
-                                         className={`draggable-item w-28 h-28 text-6xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_8px_0_0_rgba(0,0,0,0.6)] ${
-                                             selected === num ? 'pulse-glow bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-400 hover:bg-slate-600'
+                                         className={`draggable-item w-16 h-16 md:w-28 md:h-28 text-3xl md:text-6xl font-black rounded-full flex items-center justify-center border-2 md:border-4 shadow-[0_4px_0_0_rgba(0,0,0,0.5)] ${
+                                             selected === num ? 'bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-500 hover:bg-slate-600'
                                          }`}>
                                         {num}
                                     </div>
@@ -684,67 +745,85 @@
             const handleAnswer = (qIdx, opt) => { playPop(); setAnswers(prev => ({...prev, [qIdx]: opt})); };
 
             const check = () => {
+                let hasIncomplete = false;
                 for (let i = 0; i < data.fractions.length; i++) {
-                    if (!data.fractions[i].static) {
-                        if (placed[i] == null) { onError("¡Alerta! Convierte todas las fracciones al mismo denominador arrastrando los números."); return; }
-                        if (placed[i] !== data.fractions[i].targetN) { onError(`Error en ${data.fractions[i].name}. Recuerda multiplicar numerador por el mismo factor que el denominador.`); return; }
-                    }
+                    if (!data.fractions[i].static && placed[i] == null) hasIncomplete = true;
                 }
                 for (let i = 0; i < data.questions.length; i++) {
-                    if (!answers[i]) { onError("Analiza los resultados y responde todas las preguntas del reporte."); return; }
-                    if (answers[i] !== data.questions[i].answer) { onError(`Tu respuesta a la pregunta "${data.questions[i].text}" es incorrecta. ¡Observa las conversiones!`); return; }
+                    if (!answers[i]) hasIncomplete = true;
                 }
-                onComplete();
+                
+                if (hasIncomplete) {
+                    onError("Completa las conversiones y responde las preguntas antes de enviar.", false);
+                    return;
+                }
+
+                let hasError = false;
+                let errMsg = "";
+                for (let i = 0; i < data.fractions.length; i++) {
+                    if (!data.fractions[i].static && placed[i] !== data.fractions[i].targetN) {
+                        hasError = true; errMsg = `Error en ${data.fractions[i].name}. Verifica tu conversión.`; break;
+                    }
+                }
+                
+                if (!hasError) {
+                    for (let i = 0; i < data.questions.length; i++) {
+                        if (answers[i] !== data.questions[i].answer) { hasError = true; errMsg = `Tu respuesta a la pregunta "${data.questions[i].text}" es incorrecta.`; break;}
+                    }
+                }
+
+                if (hasError) onError(errMsg);
+                else onComplete();
             };
 
             return (
                 <div className="horizontal-layout relative">
                     <div className="robot-pane">
-                        <RobotGuide text={`¡Misión Analítica! Compara las fracciones convirtiéndolas a un mismo denominador y resuelve el caso.`} />
-                        <Button onClick={check} variant="primary" className="mt-12 w-full text-3xl py-6">Enviar Reporte</Button>
+                        <RobotGuide text={`¡Misión Analítica! Homogeneiza las fracciones a un mismo denominador y resuelve el caso.`} />
+                        <Button onClick={check} variant="primary" className="mt-6 md:mt-12 w-full text-xl md:text-3xl py-4 md:py-6">Enviar Reporte</Button>
                     </div>
 
                     <div className="interaction-pane">
-                        <div className="flex flex-col items-center w-full min-w-[800px] gap-6 max-h-[85vh] overflow-y-auto no-scrollbar pb-4 px-2">
+                        <div className="flex flex-col items-center w-full max-w-5xl gap-4 md:gap-6 max-h-[85vh] overflow-y-auto no-scrollbar pb-4 px-2">
 
-                            <div className="glass-panel p-8 rounded-[3rem] border-4 border-[var(--brand-yellow)] shadow-[0_0_30px_rgba(255,230,0,0.3)] w-full bg-gradient-to-r from-slate-900 to-slate-800 text-center">
-                                <p className="text-[22px] font-bold text-white leading-relaxed">{data.story}</p>
+                            <div className="glass-panel p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-2 md:border-4 border-[var(--brand-yellow)] shadow-[0_0_30px_rgba(255,230,0,0.3)] w-full bg-gradient-to-r from-slate-900 to-slate-800 text-center shrink-0">
+                                <p className="text-sm md:text-xl lg:text-[22px] font-bold text-white leading-relaxed">{data.story}</p>
                             </div>
 
-                            <div className="flex flex-col xl:flex-row w-full gap-6 shrink-0">
-                                <div className="glass-panel p-8 rounded-[3rem] border-4 border-[var(--brand-primary)] flex-1 flex flex-col items-center gap-8 shadow-[0_0_40px_rgba(255,0,122,0.3)] bg-slate-900/90">
-                                    <span className="text-xl font-black text-[var(--brand-primary)] uppercase tracking-widest text-center drop-shadow-md">1. Homogeneiza</span>
+                            <div className="flex flex-col lg:flex-row w-full gap-4 md:gap-6 shrink-0">
+                                <div className="glass-panel p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-2 md:border-4 border-[var(--brand-primary)] flex-1 flex flex-col items-center gap-4 md:gap-8 shadow-[0_0_40px_rgba(255,0,122,0.3)] bg-slate-900/90">
+                                    <span className="text-lg md:text-xl font-black text-[var(--brand-primary)] uppercase tracking-widest text-center drop-shadow-md">1. Homogeneiza</span>
                                     
-                                    <div className="flex flex-col gap-5 w-full px-2">
+                                    <div className="flex flex-col gap-3 md:gap-5 w-full">
                                         {data.fractions.map((f, idx) => (
-                                            <div key={idx} className="flex items-center justify-between bg-slate-800 p-4 rounded-3xl border-2 border-slate-600 shadow-lg">
-                                                <span className="text-xl font-bold text-[var(--brand-secondary)] w-36 truncate">{f.name}:</span>
-                                                <div className="flex items-center gap-6">
+                                            <div key={idx} className="flex items-center justify-between bg-slate-800 p-2 md:p-4 rounded-2xl md:rounded-3xl border-2 border-slate-600 shadow-lg">
+                                                <span className="text-sm md:text-xl font-bold text-[var(--brand-secondary)] w-20 md:w-36 truncate">{f.name}:</span>
+                                                <div className="flex items-center gap-2 md:gap-6 scale-90 md:scale-100 origin-right">
                                                     <FractionDisplay num={f.n} den={f.d} />
-                                                    <span className="text-4xl font-black text-[var(--brand-yellow)] mx-2">=</span>
+                                                    <span className="text-2xl md:text-4xl font-black text-[var(--brand-yellow)] mx-1 md:mx-2">=</span>
                                                     <div className="flex flex-col items-center">
                                                         {f.static ? (
-                                                            <span className="text-6xl font-black text-white px-2 py-1 drop-shadow-md">{f.targetN}</span>
+                                                            <span className="text-4xl md:text-6xl font-black text-white px-2 py-1 drop-shadow-md">{f.targetN}</span>
                                                         ) : (
-                                                            <div onDragOver={e=>e.preventDefault()} onDrop={(e)=>onDrop(e, idx)} onClick={() => handleDropClick(idx)} className={`w-20 h-20 rounded-2xl dropzone border-4 border-dashed bg-slate-900 flex justify-center items-center ${selected && placed[idx] == null ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed[idx] != null ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
+                                                            <div onDragOver={e=>e.preventDefault()} onDrop={(e)=>onDrop(e, idx)} onClick={() => handleDropClick(idx)} className={`w-12 h-12 md:w-20 md:h-20 rounded-xl md:rounded-2xl dropzone border-2 md:border-4 border-dashed bg-slate-900 flex justify-center items-center ${selected && placed[idx] == null ? 'active border-[var(--brand-yellow)]' : 'border-slate-500'} ${placed[idx] != null ? 'filled border-[var(--brand-yellow)] bg-[var(--brand-yellow)]/20' : ''}`}>
                                                                 {placed[idx] != null ? (
-                                                                    <div onClick={(e) => handleRemove(idx, e)} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-xl flex items-center justify-center text-5xl font-black pop-in shadow-[0_0_15px_rgba(255,234,0,0.8)] cursor-pointer">{placed[idx]}</div>
-                                                                ) : <span className="text-slate-400 text-xs font-bold text-center">Arrastrar</span>}
+                                                                    <div onClick={(e) => handleRemove(idx, e)} className="w-full h-full bg-[var(--brand-yellow)] text-slate-900 rounded-lg md:rounded-xl flex items-center justify-center text-3xl md:text-5xl font-black pop-in shadow-[0_0_15px_rgba(255,234,0,0.8)] cursor-pointer">{placed[idx]}</div>
+                                                                ) : <span className="text-slate-400 text-[10px] md:text-xs font-bold text-center">Tocar</span>}
                                                             </div>
                                                         )}
-                                                        <div className="w-24 h-2 bg-white rounded-full my-2 shadow-sm"></div>
-                                                        <span className="text-6xl font-black text-white px-2 drop-shadow-md">{f.targetD}</span>
+                                                        <div className="w-14 md:w-24 h-1 md:h-2 bg-white rounded-full my-1 md:my-2 shadow-sm"></div>
+                                                        <span className="text-4xl md:text-6xl font-black text-white px-2 drop-shadow-md">{f.targetD}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
                                     
-                                    <div className="flex flex-wrap justify-center gap-4 mt-2 bg-slate-800/80 w-full p-6 rounded-[2rem] border-2 border-slate-600 shadow-inner">
+                                    <div className="flex flex-wrap justify-center gap-2 md:gap-4 mt-2 bg-slate-800/80 w-full p-3 md:p-6 rounded-xl md:rounded-[2rem] border-2 border-slate-600 shadow-inner">
                                         {data.pool.map((num, i) => {
                                             return (
                                                 <div key={i} draggable onDragStart={(e)=>onDragStart(e, num)} onClick={() => handleSelect(num)}
-                                                    className={`draggable-item w-20 h-20 text-4xl font-black rounded-full flex items-center justify-center border-4 shadow-[0_6px_0_0_rgba(0,0,0,0.5)] ${
+                                                    className={`draggable-item w-12 h-12 md:w-20 md:h-20 text-xl md:text-4xl font-black rounded-full flex items-center justify-center border-2 md:border-4 shadow-[0_4px_0_0_rgba(0,0,0,0.5)] ${
                                                         selected === num ? 'bg-[var(--brand-yellow)] text-slate-900 border-white scale-110' : 'bg-slate-700 text-white border-slate-500 hover:bg-slate-600'
                                                     }`}
                                                 >
@@ -755,17 +834,17 @@
                                     </div>
                                 </div>
 
-                                <div className="glass-panel p-8 rounded-[3rem] border-4 border-[var(--brand-secondary)] flex-1 flex flex-col items-center gap-8 shadow-[0_0_40px_rgba(0,240,255,0.3)] bg-slate-900/90">
-                                    <span className="text-xl font-black text-[var(--brand-secondary)] uppercase tracking-widest text-center drop-shadow-md">2. Reporte Final</span>
+                                <div className="glass-panel p-4 md:p-8 rounded-[2rem] md:rounded-[3rem] border-2 md:border-4 border-[var(--brand-secondary)] flex-1 flex flex-col items-center gap-4 md:gap-8 shadow-[0_0_40px_rgba(0,240,255,0.3)] bg-slate-900/90">
+                                    <span className="text-lg md:text-xl font-black text-[var(--brand-secondary)] uppercase tracking-widest text-center drop-shadow-md">2. Reporte Final</span>
                                     
-                                    <div className="flex flex-col gap-8 w-full px-2">
+                                    <div className="flex flex-col gap-4 md:gap-8 w-full px-2">
                                         {data.questions.map((q, qIdx) => (
-                                            <div key={qIdx} className="flex flex-col gap-4">
-                                                <h3 className="text-2xl font-black text-white">{q.text}</h3>
-                                                <div className="flex flex-col gap-3">
+                                            <div key={qIdx} className="flex flex-col gap-2 md:gap-4">
+                                                <h3 className="text-base md:text-2xl font-black text-white">{q.text}</h3>
+                                                <div className="flex flex-col gap-2 md:gap-3">
                                                     {q.options.map(opt => (
                                                         <button key={opt} onClick={() => handleAnswer(qIdx, opt)}
-                                                            className={`py-4 px-6 rounded-2xl text-xl font-bold transition-all border-2 text-left ${
+                                                            className={`py-2 px-4 md:py-4 md:px-6 rounded-xl md:rounded-2xl text-sm md:text-xl font-bold transition-all border-2 text-left ${
                                                                 answers[qIdx] === opt
                                                                 ? 'bg-[var(--brand-green)] border-[var(--brand-green)] text-slate-900 shadow-[0_0_20px_rgba(0,255,102,0.8)] scale-[1.02]'
                                                                 : 'bg-slate-800 border-slate-600 text-slate-300 hover:border-[var(--brand-secondary)] hover:text-white'
@@ -787,62 +866,48 @@
         };
 
         const missionsData = [
-            // BLOQUE 1
+            // BLOQUE 1 
             [
-                { type: 'number_line_interactive', f1: {n: 1, d: 3}, d2: 6, correctN: 2 },
                 { type: 'number_line_interactive', f1: {n: 1, d: 2}, d2: 4, correctN: 2 },
+                { type: 'number_line_interactive', f1: {n: 1, d: 3}, d2: 6, correctN: 2 },
+                { type: 'number_line_interactive', f1: {n: 2, d: 3}, d2: 9, correctN: 6 },
                 { type: 'number_line_interactive', f1: {n: 3, d: 4}, d2: 8, correctN: 6 },
-                { type: 'number_line_interactive', f1: {n: 2, d: 5}, d2: 10, correctN: 4 },
-                { type: 'number_line_interactive', f1: {n: 2, d: 3}, d2: 9, correctN: 6 }
+                { type: 'number_line_interactive', f1: {n: 2, d: 5}, d2: 10, correctN: 4 }
             ],
-            // BLOQUE 2
+            // BLOQUE 2 (Ordenado por dificultad, posiciones variadas, x5, x8, x9 y divisiones)
             [
-                { type: 'visual', base: {n: 4, d: 5}, options: [{n: 8, d: 10}, {n: 4, d: 10}, {n: 2, d: 5}], correct: {n: 8, d: 10} },
-                { type: 'visual', base: {n: 4, d: 6}, options: [{n: 8, d: 12}, {n: 2, d: 12}, {n: 6, d: 12}], correct: {n: 8, d: 12} },
-                { type: 'visual', base: {n: 6, d: 8}, options: [{n: 3, d: 4}, {n: 1, d: 4}, {n: 2, d: 4}], correct: {n: 3, d: 4} },
-                { type: 'visual', base: {n: 1, d: 3}, options: [{n: 2, d: 6}, {n: 3, d: 6}, {n: 1, d: 6}], correct: {n: 2, d: 6} },
-                { type: 'visual', base: {n: 2, d: 3}, options: [{n: 4, d: 6}, {n: 5, d: 6}, {n: 1, d: 3}], correct: {n: 4, d: 6} }
+                { type: 'visual', base: {n: 1, d: 3}, options: [{n: 6, d: 27}, {n: 12, d: 27}, {n: 9, d: 27}], correct: {n: 9, d: 27} },
+                { type: 'visual', base: {n: 24, d: 32}, options: [{n: 3, d: 4}, {n: 2, d: 4}, {n: 1, d: 4}], correct: {n: 3, d: 4} },
+                { type: 'visual', base: {n: 2, d: 3}, options: [{n: 12, d: 24}, {n: 16, d: 24}, {n: 20, d: 24}], correct: {n: 16, d: 24} },
+                { type: 'visual', base: {n: 18, d: 27}, options: [{n: 1, d: 3}, {n: 3, d: 3}, {n: 2, d: 3}], correct: {n: 2, d: 3} },
+                { type: 'visual', base: {n: 3, d: 4}, options: [{n: 12, d: 20}, {n: 15, d: 20}, {n: 10, d: 20}], correct: {n: 15, d: 20} }
             ],
-            // BLOQUE 3
+            // BLOQUE 3 
             [
-                { type: 'operation', op: '÷', factor: 4, origN: 20, origD: 32, ansN: 5, ansD: 8, pool: [4, 5, 6, 8] },
-                { type: 'operation', op: 'x', factor: 2, origN: 5, origD: 7, ansN: 10, ansD: 14, pool: [10, 12, 14, 15] },
-                { type: 'operation', op: 'x', factor: 3, origN: 4, origD: 9, ansN: 12, ansD: 27, pool: [12, 16, 24, 27] },
-                { type: 'operation', op: '÷', factor: 5, origN: 25, origD: 35, ansN: 5, ansD: 7, pool: [3, 5, 7, 9] },
-                { type: 'operation', op: '÷', factor: 8, origN: 72, origD: 80, ansN: 9, ansD: 10, pool: [8, 9, 10, 12] }
+                { type: 'operation', op: '÷', factor: 6, origN: 30, origD: 48, ansN: 5, ansD: 8, pool: [4, 5, 8, 9] },
+                { type: 'operation', op: 'x', factor: 7, origN: 6, origD: 9, ansN: 42, ansD: 63, pool: [36, 42, 54, 63] },
+                { type: 'operation', op: '÷', factor: 8, origN: 56, origD: 72, ansN: 7, ansD: 9, pool: [6, 7, 8, 9] },
+                { type: 'operation', op: 'x', factor: 9, origN: 5, origD: 11, ansN: 45, ansD: 99, pool: [45, 55, 88, 99] },
+                { type: 'operation', op: '÷', factor: 12, origN: 60, origD: 144, ansN: 5, ansD: 12, pool: [5, 6, 12, 14] }
             ],
             // BLOQUE 4
             [
-                { type: 'missing_term', n1: "4", d1: "5", n2: "X", d2: "15", pos: 3, missingValue: 12, pool: [8, 10, 12, 16] },
-                { type: 'missing_term', n1: "8", d1: "12", n2: "2", d2: "X", pos: 4, missingValue: 3, pool: [3, 4, 6, 8] },
-                { type: 'missing_term', n1: "X", d1: "8", n2: "21", d2: "24", pos: 1, missingValue: 7, pool: [5, 6, 7, 9] },
-                { type: 'missing_term', n1: "50", d1: "X", n2: "10", d2: "3", pos: 2, missingValue: 15, pool: [5, 10, 15, 20] },
-                { type: 'missing_term', n1: "3", d1: "9", n2: "5", d2: "X", pos: 4, missingValue: 15, pool: [10, 12, 15, 18] } 
+                { type: 'missing_term', n1: "X", d1: "6", n2: "35", d2: "42", pos: 1, missingValue: 5, pool: [4, 5, 6, 7] },
+                { type: 'missing_term', n1: "60", d1: "105", n2: "X", d2: "7", pos: 3, missingValue: 4, pool: [3, 4, 5, 6] },
+                { type: 'missing_term', n1: "81", d1: "X", n2: "9", d2: "11", pos: 2, missingValue: 99, pool: [77, 88, 99, 110] },
+                { type: 'missing_term', n1: "42", d1: "54", n2: "7", d2: "X", pos: 4, missingValue: 9, pool: [6, 7, 8, 9] }, 
+                { type: 'missing_term', n1: "7", d1: "12", n2: "56", d2: "X", pos: 4, missingValue: 96, pool: [84, 96, 108, 120] }
             ],
             // BLOQUE 5
             [
-                { type: 'paint', f1: {n: 4, d: 5}, f2: {d: 10}, correctN: 8, pool: [6, 7, 8, 10] },
-                { type: 'paint', f1: {n: 4, d: 6}, f2: {d: 12}, correctN: 8, pool: [4, 6, 8, 10] },
-                { type: 'paint', f1: {n: 3, d: 4}, f2: {d: 8}, correctN: 6, pool: [4, 5, 6, 7] },
                 { type: 'paint', f1: {n: 1, d: 2}, f2: {d: 6}, correctN: 3, pool: [2, 3, 4, 5] },
-                { type: 'paint', f1: {n: 2, d: 3}, f2: {d: 9}, correctN: 6, pool: [5, 6, 7, 9] }
+                { type: 'paint', f1: {n: 2, d: 3}, f2: {d: 9}, correctN: 6, pool: [5, 6, 7, 9] },
+                { type: 'paint', f1: {n: 3, d: 4}, f2: {d: 8}, correctN: 6, pool: [4, 5, 6, 7] },
+                { type: 'paint', f1: {n: 4, d: 6}, f2: {d: 12}, correctN: 8, pool: [4, 6, 8, 10] },
+                { type: 'paint', f1: {n: 4, d: 5}, f2: {d: 10}, correctN: 8, pool: [6, 7, 8, 10] }
             ],
-            // BLOQUE 6
+            // BLOQUE 6 
             [
-                { 
-                    type: 'word_problem', 
-                    story: "En una feria gastronómica se vendió 3/8 de queso fresco, 9/16 de mantecoso y 12/32 de paria. Javier dice que el queso fresco fue el más vendido. Zulema afirma que el fresco y paria vendieron la misma cantidad.", 
-                    fractions: [
-                        { name: "Q. Fresco", n: 3, d: 8, targetD: 32, targetN: 12, static: false },
-                        { name: "Q. Mantecoso", n: 9, d: 16, targetD: 32, targetN: 18, static: false },
-                        { name: "Q. Paria", n: 12, d: 32, targetD: 32, targetN: 12, static: true }
-                    ],
-                    pool: [12, 18, 9, 24],
-                    questions: [
-                        { text: "¿Quién tiene la razón?", options: ["Javier", "Zulema", "Ninguno"], answer: "Zulema" },
-                        { text: "¿Por qué?", options: ["Porque 3/8 y 12/32 son fracciones equivalentes.", "Porque el queso mantecoso vendió menos.", "Porque 3/8 es la fracción mayor de todas."], answer: "Porque 3/8 y 12/32 son fracciones equivalentes." }
-                    ]
-                },
                 { 
                     type: 'word_problem', 
                     story: "Tres estudiantes vendieron tortas. Adrián vendió 1/3, Mayra 2/6 y Thiago 3/9. Adrián está triste porque cree que vendió menos, pero Thiago asegura que los tres vendieron exactamente lo mismo.", 
@@ -859,16 +924,16 @@
                 },
                 { 
                     type: 'word_problem', 
-                    story: "Pintando un mural, Ana usó 2/5 de pintura azul, Luis 4/10 de roja y Pedro 1/2 de verde. Luis afirma que usó lo mismo que Ana, pero Pedro dice que él usó más pintura que todos.", 
+                    story: "Carlos comió 4/6 de pizza, Elena 8/12 y Hugo 2/3. Carlos asegura que comió menos que Elena, pero Hugo les dice que dejen de discutir porque los tres comieron exactamente igual.", 
                     fractions: [
-                        { name: "P. Azul (Ana)", n: 2, d: 5, targetD: 10, targetN: 4, static: false },
-                        { name: "P. Roja (Luis)", n: 4, d: 10, targetD: 10, targetN: 4, static: true },
-                        { name: "P. Verde (Pedro)", n: 1, d: 2, targetD: 10, targetN: 5, static: false }
+                        { name: "Pizza Carlos", n: 4, d: 6, targetD: 12, targetN: 8, static: false },
+                        { name: "Pizza Elena", n: 8, d: 12, targetD: 12, targetN: 8, static: true },
+                        { name: "Pizza Hugo", n: 2, d: 3, targetD: 12, targetN: 8, static: false }
                     ],
-                    pool: [4, 5, 2, 8],
+                    pool: [8, 6, 4, 10],
                     questions: [
-                        { text: "¿Quiénes dicen la verdad en sus afirmaciones?", options: ["Solo Luis", "Solo Pedro", "Luis y Pedro"], answer: "Luis y Pedro" },
-                        { text: "¿Por qué?", options: ["2/5 y 4/10 equivalen, y 5/10 es mayor que 4/10.", "Porque 1/2 es la fracción más pequeña.", "Ana y Luis usaron pintura diferente."], answer: "2/5 y 4/10 equivalen, y 5/10 es mayor que 4/10." }
+                        { text: "¿Quién tiene la razón?", options: ["Carlos", "Elena", "Hugo"], answer: "Hugo" },
+                        { text: "¿Por qué?", options: ["Porque las tres fracciones son equivalentes a 8/12.", "Porque Carlos comió solo 4 pedazos.", "Porque 2/3 es menor que 8/12."], answer: "Porque las tres fracciones son equivalentes a 8/12." }
                     ]
                 },
                 { 
@@ -887,16 +952,30 @@
                 },
                 { 
                     type: 'word_problem', 
-                    story: "Carlos comió 4/6 de pizza, Elena 8/12 y Hugo 2/3. Carlos asegura que comió menos que Elena, pero Hugo les dice que dejen de discutir porque los tres comieron exactamente igual.", 
+                    story: "Pintando un mural, Ana usó 2/5 de pintura azul, Luis 4/10 de roja y Pedro 1/2 de verde. Luis afirma que usó lo mismo que Ana, pero Pedro dice que él usó más pintura que todos.", 
                     fractions: [
-                        { name: "Pizza Carlos", n: 4, d: 6, targetD: 12, targetN: 8, static: false },
-                        { name: "Pizza Elena", n: 8, d: 12, targetD: 12, targetN: 8, static: true },
-                        { name: "Pizza Hugo", n: 2, d: 3, targetD: 12, targetN: 8, static: false }
+                        { name: "P. Azul (Ana)", n: 2, d: 5, targetD: 10, targetN: 4, static: false },
+                        { name: "P. Roja (Luis)", n: 4, d: 10, targetD: 10, targetN: 4, static: true },
+                        { name: "P. Verde (Pedro)", n: 1, d: 2, targetD: 10, targetN: 5, static: false }
                     ],
-                    pool: [8, 6, 4, 10],
+                    pool: [4, 5, 2, 8],
                     questions: [
-                        { text: "¿Quién tiene la razón?", options: ["Carlos", "Elena", "Hugo"], answer: "Hugo" },
-                        { text: "¿Por qué?", options: ["Porque las tres fracciones son equivalentes a 8/12.", "Porque Carlos comió solo 4 pedazos.", "Porque 2/3 es menor que 8/12."], answer: "Porque las tres fracciones son equivalentes a 8/12." }
+                        { text: "¿Quiénes dicen la verdad en sus afirmaciones?", options: ["Solo Luis", "Solo Pedro", "Luis y Pedro"], answer: "Luis y Pedro" },
+                        { text: "¿Por qué?", options: ["2/5 y 4/10 equivalen, y 5/10 es mayor que 4/10.", "Porque 1/2 es la fracción más pequeña.", "Ana y Luis usaron pintura diferente."], answer: "2/5 y 4/10 equivalen, y 5/10 es mayor que 4/10." }
+                    ]
+                },
+                { 
+                    type: 'word_problem', 
+                    story: "En una feria gastronómica se vendió 3/8 de queso fresco, 9/16 de mantecoso y 12/32 de paria. Javier dice que el queso fresco fue el más vendido. Zulema afirma que el fresco y paria vendieron la misma cantidad.", 
+                    fractions: [
+                        { name: "Q. Fresco", n: 3, d: 8, targetD: 32, targetN: 12, static: false },
+                        { name: "Q. Mantecoso", n: 9, d: 16, targetD: 32, targetN: 18, static: false },
+                        { name: "Q. Paria", n: 12, d: 32, targetD: 32, targetN: 12, static: true }
+                    ],
+                    pool: [12, 18, 9, 24],
+                    questions: [
+                        { text: "¿Quién tiene la razón?", options: ["Javier", "Zulema", "Ninguno"], answer: "Zulema" },
+                        { text: "¿Por qué?", options: ["Porque 3/8 y 12/32 son fracciones equivalentes.", "Porque el queso mantecoso vendió menos.", "Porque 3/8 es la fracción mayor de todas."], answer: "Porque 3/8 y 12/32 son fracciones equivalentes." }
                     ]
                 }
             ]
@@ -912,31 +991,52 @@
                 { title: "Problemas Cotidianos", icon: "🧠", color: "var(--brand-orange)" }
             ];
             
+            const activeMissionIndex = completedBlocks.length;
+            
             return (
-                <div className="flex flex-col items-center justify-center h-full w-full max-w-[1400px] mx-auto p-8 lg:p-12 pop-in relative z-20">
-                    <h1 className="text-6xl md:text-8xl font-black text-white mb-4 uppercase neon-text text-center tracking-wide drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
+                <div className="flex flex-col items-center justify-center h-full w-full max-w-[1400px] mx-auto p-4 md:p-12 pop-in relative z-20">
+                    <h1 className="text-4xl md:text-8xl font-black text-white mb-2 md:mb-4 uppercase neon-text text-center tracking-wide drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
                         Estación Espacial
                     </h1>
-                    <p className="text-2xl md:text-4xl text-[var(--brand-yellow)] mb-12 font-black text-center drop-shadow-md">
+                    <p className="text-xl md:text-4xl text-[var(--brand-yellow)] mb-6 md:mb-12 font-black text-center drop-shadow-md px-4">
                         ¡Elige tu próxima misión matemática, cadete!
                     </p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 w-full px-4">
                         {blockNames.map((block, index) => {
-                            const isCompleted = completedBlocks.includes(index);
+                            const isCompleted = index < activeMissionIndex;
+                            const isActive = index === activeMissionIndex;
+                            const isLocked = index > activeMissionIndex;
+                            
+                            let stateClass = '';
+                            let cursorClass = '';
+                            
+                            if (isCompleted) {
+                                stateClass = 'bg-slate-900 border-slate-700 opacity-70';
+                                cursorClass = 'cursor-not-allowed';
+                            } else if (isActive) {
+                                stateClass = 'bg-gradient-to-br from-slate-800 to-slate-900 border-[var(--brand-green)] shadow-[0_10px_20px_rgba(0,255,102,0.2)] md:hover:scale-105 hover:shadow-[0_15px_40px_rgba(0,255,102,0.4)] animate-pulse';
+                                cursorClass = 'cursor-pointer';
+                            } else if (isLocked) {
+                                stateClass = 'bg-slate-900/50 border-slate-800 opacity-50 grayscale';
+                                cursorClass = 'cursor-not-allowed';
+                            }
+
                             return (
-                                <button key={index} onClick={() => onSelectBlock(index)}
-                                    className={`relative flex flex-col items-center justify-center p-8 rounded-[3rem] border-4 transition-all duration-300 shadow-2xl overflow-hidden min-h-[220px] group
-                                        ${isCompleted 
-                                            ? 'bg-gradient-to-br from-slate-800 to-slate-900 border-[var(--brand-green)] hover:scale-105 shadow-[0_15px_30px_rgba(0,255,102,0.2)]' 
-                                            : 'bg-gradient-to-br from-slate-800 to-slate-900 border-slate-600 hover:scale-105 hover:border-[var(--brand-primary)] hover:shadow-[0_15px_40px_rgba(255,0,122,0.4)]'
-                                        }
-                                    `}
+                                <button key={index} 
+                                    onClick={() => { if(isActive) onSelectBlock(index); }}
+                                    className={`relative flex flex-col items-center justify-center p-6 md:p-8 rounded-3xl md:rounded-[3rem] border-2 md:border-4 transition-all duration-300 shadow-2xl overflow-hidden min-h-[160px] md:min-h-[220px] group ${stateClass} ${cursorClass}`}
                                 >
-                                    {isCompleted && <div className="absolute top-6 right-6 bg-[var(--brand-green)] text-slate-900 rounded-full p-2 shadow-[0_0_20px_rgba(0,255,102,1)]"><Check size={32} className="fill-none" strokeWidth={4} /></div>}
-                                    <div className="text-7xl mb-4 group-hover:scale-110 transition-transform drop-shadow-lg">{block.icon}</div>
-                                    <div className={`text-3xl font-black mb-2 uppercase tracking-widest ${isCompleted ? 'text-[var(--brand-green)]' : 'text-slate-500 group-hover:text-white'}`}>Misión 0{index + 1}</div>
-                                    <h3 className="text-2xl font-bold text-white text-center leading-tight px-4">{block.title}</h3>
+                                    {isCompleted && <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-slate-700 text-[var(--brand-green)] rounded-full p-1 md:p-2 shadow-inner"><Check size={24} className="md:w-8 md:h-8 fill-none" strokeWidth={4} /></div>}
+                                    {isLocked && <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-slate-800 text-slate-500 rounded-full p-1 md:p-2"><Lock size={24} className="md:w-8 md:h-8 fill-none" strokeWidth={3} /></div>}
+                                    
+                                    <div className="text-5xl md:text-7xl mb-2 md:mb-4 group-hover:scale-110 transition-transform drop-shadow-lg">{block.icon}</div>
+                                    <div className={`text-xl md:text-3xl font-black mb-1 md:mb-2 uppercase tracking-widest ${isActive ? 'text-[var(--brand-green)]' : 'text-slate-500'}`}>Misión 0{index + 1}</div>
+                                    <h3 className={`text-lg md:text-2xl font-bold text-center leading-tight px-2 md:px-4 ${isActive ? 'text-white' : 'text-slate-400'}`}>{block.title}</h3>
+                                    
+                                    {isActive && (
+                                        <div className="absolute bottom-4 bg-[var(--brand-green)] text-slate-900 text-xs md:text-sm font-black px-4 py-1 rounded-full uppercase tracking-widest shadow-[0_0_10px_var(--brand-green)]">Misión Actual</div>
+                                    )}
                                 </button>
                             );
                         })}
@@ -945,23 +1045,26 @@
             );
         };
 
-        const SuccessModal = ({ isVisible, onNext, isBlockComplete }) => {
-            const playWin = useSound(isBlockComplete ? 'win' : 'success');
-            useEffect(() => { if(isVisible) playWin(); }, [isVisible, playWin]);
-            if (!isVisible) return null;
+        const FinaleScreen = ({ score, onRestart }) => {
             return (
-                <div className="absolute inset-0 bg-[#0B0E14]/95 backdrop-blur-xl z-[200] flex items-center justify-center pop-in">
+                <div className="flex flex-col items-center justify-center min-h-[80vh] w-full max-w-4xl mx-auto p-4 md:p-12 pop-in relative z-20">
                     <Confetti />
-                    <div className="glass-panel p-20 rounded-[4rem] shadow-[0_0_100px_rgba(0,255,102,0.4)] flex flex-col items-center text-center max-w-3xl border-8 border-[var(--brand-green)] relative bg-gradient-to-b from-slate-900 to-slate-800">
-                        <div className="w-48 h-48 bg-gradient-to-br from-[var(--brand-green)] to-[#009933] text-slate-900 rounded-full flex items-center justify-center mb-10 float-anim border-4 border-white shadow-[0_0_40px_rgba(0,255,102,0.8)]">
-                            <Check size={120} strokeWidth={3} />
+                    <div className="glass-panel p-8 md:p-16 rounded-[3rem] md:rounded-[4rem] border-4 md:border-8 border-[var(--brand-yellow)] shadow-[0_0_60px_rgba(255,234,0,0.5)] flex flex-col items-center text-center bg-gradient-to-b from-slate-900 to-slate-800 w-full">
+                        <Star size={80} className="text-[var(--brand-yellow)] fill-[var(--brand-yellow)] animate-pulse mb-6 drop-shadow-[0_0_20px_rgba(255,234,0,0.8)]" />
+                        <h1 className="text-4xl md:text-7xl font-black text-white mb-4 uppercase tracking-widest neon-text drop-shadow-md">
+                            ¡Misiones<br/>Completadas!
+                        </h1>
+                        <p className="text-xl md:text-3xl text-slate-300 font-bold mb-8">
+                            Has superado todos los retos de la Estación Espacial.
+                        </p>
+                        
+                        <div className="bg-slate-900 border-4 border-white/20 rounded-3xl p-6 md:p-10 mb-10 w-full max-w-md shadow-inner flex flex-col items-center">
+                            <span className="text-lg md:text-2xl text-slate-400 font-bold uppercase tracking-widest mb-2">Puntaje Total Final</span>
+                            <span className="text-6xl md:text-8xl font-black text-[var(--brand-green)] drop-shadow-[0_0_15px_rgba(0,255,102,0.8)]">{score}</span>
                         </div>
-                        <h2 className="text-7xl font-black text-white mb-8 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">¡Nivel Superado!</h2>
-                        <div className="bg-gradient-to-r from-[var(--brand-yellow)] to-[#ffaa00] text-slate-900 font-black text-5xl px-12 py-5 rounded-full mb-12 shadow-[0_0_40px_rgba(255,234,0,0.6)] transform -rotate-2 border-4 border-white">
-                            +20 PUNTOS
-                        </div>
-                        <Button onClick={onNext} variant="primary" className="text-5xl px-20 py-8 shadow-[0_0_30px_rgba(255,0,122,0.8)] border-4 border-white">
-                            {isBlockComplete ? "Volver a la Base" : "Siguiente Desafío"} <Rocket size={40} className={isBlockComplete ? '' : 'transform rotate-45'} />
+
+                        <Button onClick={onRestart} variant="primary" className="text-2xl md:text-4xl px-10 py-5 w-full md:w-auto border-2 border-white">
+                            Jugar de Nuevo <Rocket size={32} className="ml-2" />
                         </Button>
                     </div>
                 </div>
@@ -973,42 +1076,173 @@
             const [currentBlock, setCurrentBlock] = useState(0);
             const [currentLevel, setCurrentLevel] = useState(0);
             const [completedBlocks, setCompletedBlocks] = useState([]);
-            const [showCheck, setShowCheck] = useState(false);
-            const [errorMsg, setErrorMsg] = useState("");
+            const [levelScores, setLevelScores] = useState({});
+            
+            const [mistakes, setMistakes] = useState(0);
+
+            const [showWarning, setShowWarning] = useState(""); 
+            const [showError, setShowError] = useState(""); 
+            const [showSuccess, setShowSuccess] = useState(""); 
+            const [showMissionComplete, setShowMissionComplete] = useState(false);
+            
             const [soundOn, setSoundOn] = useState(() => localStorage.getItem('tuprofe20-sound') !== 'off');
             
             const playClick = useSound('click');
+            const playSuccess = useSound('success');
             const playError = useSound('wrong');
+            const playWin = useSound('win');
 
-            const totalScore = completedBlocks.length * 100 + (view === 'playing' ? currentLevel * 20 : 0);
+            const calculateScore = () => {
+                let score = 0;
+                Object.values(levelScores).forEach(blockScores => {
+                    Object.values(blockScores).forEach(pts => {
+                        score += pts;
+                    });
+                });
+                return Math.max(0, score);
+            };
 
             useEffect(() => {
-                const saved = localStorage.getItem('tuprofe20-progress-final');
-                if (saved) { try { setCompletedBlocks(JSON.parse(saved)); } catch (_) {} }
+                const savedBlocks = localStorage.getItem('tuprofe20-blocks');
+                const savedScores = localStorage.getItem('tuprofe20-scores');
+                if (savedBlocks) { try { setCompletedBlocks(JSON.parse(savedBlocks)); } catch (_) {} }
+                if (savedScores) { try { setLevelScores(JSON.parse(savedScores)); } catch (_) {} }
             }, []);
+            
             useEffect(() => { soundEnabled = soundOn; localStorage.setItem('tuprofe20-sound', soundOn ? 'on' : 'off'); }, [soundOn]);
-            useEffect(() => { localStorage.setItem('tuprofe20-progress-final', JSON.stringify(completedBlocks)); }, [completedBlocks]);
+            
+            useEffect(() => { 
+                localStorage.setItem('tuprofe20-blocks', JSON.stringify(completedBlocks)); 
+                localStorage.setItem('tuprofe20-scores', JSON.stringify(levelScores));
+            }, [completedBlocks, levelScores]);
+            
             useEffect(() => {
                 const onKey = (event) => { if (event.key === 'Escape' && view === 'playing') setView('hub'); };
                 window.addEventListener('keydown', onKey);
                 return () => window.removeEventListener('keydown', onKey);
             }, [view]);
 
-            const handleStart = () => { playClick(); setView('hub'); };
-            const handleSelectBlock = (blockIndex) => { playClick(); setCurrentBlock(blockIndex); setCurrentLevel(0); setView('playing'); };
-            
-            const handleSuccess = () => { setShowCheck(true); setErrorMsg(""); };
-            const handleError = (msg) => { playError(); setErrorMsg(msg); setTimeout(() => setErrorMsg(""), 5500); };
-
-            const handleNext = () => { 
-                setShowCheck(false);
-                if (currentLevel < 4) {
-                    setCurrentLevel(l => l + 1); 
-                } 
-                else {
-                    if (!completedBlocks.includes(currentBlock)) setCompletedBlocks([...completedBlocks, currentBlock]);
-                    setView('hub');
+            // Comprobar si todas las misiones están completadas para mostrar el Finale directamente
+            useEffect(() => {
+                if (view === 'hub' && completedBlocks.length >= missionsData.length) {
+                    setView('finale');
                 }
+            }, [completedBlocks, view]);
+
+            const advanceLevelRef = useRef();
+            advanceLevelRef.current = () => {
+                const totalInBlock = missionsData[currentBlock].length;
+                setMistakes(0); 
+                
+                if (currentLevel + 1 < totalInBlock) {
+                    setCurrentLevel(prev => prev + 1);
+                } else {
+                    if (!completedBlocks.includes(currentBlock)) {
+                        setCompletedBlocks(cb => [...cb, currentBlock]);
+                    }
+                    setShowMissionComplete(true);
+                }
+            };
+
+            useEffect(() => {
+                if (showMissionComplete) {
+                    playWin();
+                    const timer = setTimeout(() => {
+                        setShowMissionComplete(false);
+                        
+                        if (currentBlock === missionsData.length - 1) {
+                            setView('finale');
+                        } else {
+                            setView('hub'); 
+                        }
+                    }, 2500);
+                    return () => clearTimeout(timer);
+                }
+            }, [showMissionComplete]);
+
+            const handleStart = () => { 
+                playClick(); 
+                if (completedBlocks.length >= missionsData.length) {
+                    setView('finale');
+                } else {
+                    setView('hub'); 
+                }
+            };
+            
+            const handleSelectBlock = (blockIndex) => { 
+                playClick(); 
+                setCurrentBlock(blockIndex); 
+                
+                setMistakes(0);
+                setCurrentLevel(0); 
+                setLevelScores(prev => {
+                    const newScores = { ...prev };
+                    delete newScores[blockIndex]; 
+                    return newScores;
+                });
+
+                setView('playing'); 
+            };
+            
+            const handleSuccess = () => {
+                playSuccess();
+                const earnedPoints = mistakes === 0 ? 20 : 10;
+                setShowSuccess(`¡Excelente! (+${earnedPoints} pts)`);
+                
+                setLevelScores(prev => ({
+                    ...prev,
+                    [currentBlock]: {
+                        ...(prev[currentBlock] || {}),
+                        [currentLevel]: earnedPoints
+                    }
+                }));
+
+                setTimeout(() => {
+                    setShowSuccess("");
+                    advanceLevelRef.current();
+                }, 2000);
+            };
+            
+            const handleError = (msg, isMistake = true) => { 
+                if (!isMistake) {
+                    setShowWarning(msg);
+                    setTimeout(() => setShowWarning(""), 2000);
+                    return;
+                }
+
+                playError(); 
+                
+                const newMistakes = mistakes + 1;
+                setMistakes(newMistakes);
+
+                if (newMistakes >= 2) {
+                    setShowError("¡Intentos Agotados! Obtienes 0 puntos. " + msg);
+                    setLevelScores(prev => ({
+                        ...prev,
+                        [currentBlock]: {
+                            ...(prev[currentBlock] || {}),
+                            [currentLevel]: 0 
+                        }
+                    }));
+                    setTimeout(() => {
+                        setShowError("");
+                        advanceLevelRef.current();
+                    }, 2500);
+                } else {
+                    setShowError("¡Fallaste! Pierdes 10 puntos (Te queda 1 intento). " + msg);
+                    setTimeout(() => {
+                        setShowError("");
+                    }, 2500);
+                }
+            };
+
+            const handleRestart = () => {
+                playClick();
+                setCompletedBlocks([]);
+                setLevelScores({});
+                setCurrentBlock(0);
+                setCurrentLevel(0);
+                setView('start');
             };
 
             const renderCurrentActivity = () => {
@@ -1031,59 +1265,142 @@
                     <DynamicBackground />
                     
                     {view !== 'start' && (
-                        <div className="min-h-24 bg-slate-900/80 backdrop-blur-xl border-b-2 border-white/20 px-4 md:px-12 py-4 flex items-center justify-between gap-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] z-50 shrink-0 w-full relative">
-                            <div className="flex items-center gap-6">
-                                {view === 'playing' && (
-                                    <button onClick={() => {playClick(); setView('hub');}} className="w-16 h-16 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-[var(--brand-primary)] hover:to-[var(--brand-tertiary)] border-2 border-slate-500 hover:border-white rounded-2xl flex items-center justify-center transition-all bouncy-hover text-white shadow-lg">
-                                        <ArrowLeft size={36} strokeWidth={3} />
-                                    </button>
-                                )}
-                                <div className="font-black text-white uppercase tracking-widest text-lg md:text-3xl drop-shadow-lg flex flex-col justify-center">
-                                    {view === 'hub' ? "Menú Principal" : `Misión ${currentBlock + 1} - Nivel ${currentLevel + 1}/5`}
-                                    {view === 'playing' && <div className="progress-track w-40 md:w-80 mt-2"><div className="progress-fill" style={{width: `${((currentLevel + 1) / 5) * 100}%`}} /></div>}
+                        <div className="min-h-[4.5rem] bg-slate-900/90 backdrop-blur-xl border-b-2 border-white/20 px-2 md:px-12 py-2 md:py-4 flex flex-wrap items-center justify-between gap-2 md:gap-4 shadow-[0_10px_30px_rgba(0,0,0,0.5)] z-50 w-full relative">
+                            <div className="flex items-center gap-2 md:gap-6 w-full md:w-auto justify-between md:justify-start">
+                                <div className="flex items-center gap-2 md:gap-4">
+                                    {view === 'playing' && (
+                                        <button onClick={() => {playClick(); setView('hub');}} className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-[var(--brand-primary)] hover:to-[var(--brand-tertiary)] border-2 border-slate-500 hover:border-white rounded-lg md:rounded-2xl flex items-center justify-center transition-all bouncy-hover text-white shadow-lg shrink-0">
+                                            <ArrowLeft size={24} strokeWidth={3} className="md:w-9 md:h-9" />
+                                        </button>
+                                    )}
+                                    <div className="font-black text-white uppercase tracking-widest text-sm md:text-lg drop-shadow-lg flex flex-col justify-center">
+                                        {view === 'hub' ? "Menú Principal" : (view === 'finale' ? "Aventura Superada" : `Misión 0${currentBlock + 1}`)}
+                                        {view === 'playing' && (
+                                            <div className="flex gap-1 md:gap-2 mt-1 md:mt-2 overflow-x-auto no-scrollbar pb-1 pointer-events-none">
+                                                {missionsData[currentBlock].map((_, i) => {
+                                                    const isCurrent = currentLevel === i;
+                                                    const score = levelScores[currentBlock]?.[i];
+                                                    let bgClass = "bg-slate-700 border-slate-500 text-slate-400";
+                                                    
+                                                    if (isCurrent) bgClass = "bg-[var(--brand-primary)] border-white text-white shadow-[0_0_10px_var(--brand-primary)] scale-110";
+                                                    else if (score > 0) bgClass = "bg-[var(--brand-green)] border-[var(--brand-green)] text-slate-900";
+                                                    else if (score === 0) bgClass = "bg-[var(--brand-primary)] border-[var(--brand-primary)] text-white";
+                                                    
+                                                    return (
+                                                        <div key={i} className={`w-6 h-6 md:w-10 md:h-10 rounded-full border-2 font-black text-xs md:text-lg transition-all flex items-center justify-center shrink-0 ${bgClass}`}>
+                                                            {i + 1}
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                                
+                                <div className="flex md:hidden items-center gap-2">
+                                    <button type="button" onClick={() => { playClick(); setSoundOn(v => !v); }} className="w-10 h-10 rounded-lg display-grid place-items-center bg-slate-800 border-2 border-white/20 text-xl" aria-label={soundOn ? 'Silenciar sonidos' : 'Activar sonidos'}>{soundOn ? '🔊' : '🔇'}</button>
                                 </div>
                             </div>
                             
-                            <div className="flex items-center gap-4 md:gap-6">
-                            <button type="button" onClick={() => { playClick(); setSoundOn(v => !v); }} className="icon-button bouncy-hover text-3xl shadow-lg bg-slate-800" aria-label={soundOn ? 'Silenciar sonidos' : 'Activar sonidos'} title={soundOn ? 'Silenciar' : 'Activar sonido'}>{soundOn ? '🔊' : '🔇'}</button>
-                            <div className="flex items-center gap-4 bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-3 rounded-full border-4 border-[var(--brand-yellow)] shadow-[0_0_20px_rgba(255,234,0,0.4)]">
-                                <Star size={40} className="text-[var(--brand-yellow)] fill-[var(--brand-yellow)] animate-pulse drop-shadow-[0_0_10px_rgba(255,234,0,0.8)]" />
-                                <span className="font-black text-[var(--brand-yellow)] text-2xl md:text-4xl drop-shadow-md">{totalScore} PTS</span>
+                            <div className="hidden md:flex items-center gap-4 md:gap-6">
+                                <button type="button" onClick={() => { playClick(); setSoundOn(v => !v); }} className="icon-button bouncy-hover text-3xl shadow-lg bg-slate-800" aria-label={soundOn ? 'Silenciar sonidos' : 'Activar sonidos'} title={soundOn ? 'Silenciar' : 'Activar sonido'}>{soundOn ? '🔊' : '🔇'}</button>
+                                <div className="flex items-center gap-2 md:gap-4 bg-gradient-to-r from-slate-900 to-slate-800 px-4 md:px-6 py-2 md:py-3 rounded-full border-2 md:border-4 border-[var(--brand-yellow)] shadow-[0_0_20px_rgba(255,234,0,0.4)]">
+                                    <Star size={24} className="md:w-10 md:h-10 text-[var(--brand-yellow)] fill-[var(--brand-yellow)] animate-pulse drop-shadow-[0_0_10px_rgba(255,234,0,0.8)]" />
+                                    <span className="font-black text-[var(--brand-yellow)] text-lg md:text-4xl drop-shadow-md">{calculateScore()} PTS</span>
+                                </div>
                             </div>
+
+                            <div className="flex md:hidden w-full items-center justify-center mt-2 border-t border-white/10 pt-2">
+                                <div className="flex items-center gap-2">
+                                    <Star size={20} className="text-[var(--brand-yellow)] fill-[var(--brand-yellow)] animate-pulse" />
+                                    <span className="font-black text-[var(--brand-yellow)] text-lg drop-shadow-md">{calculateScore()} PTS</span>
+                                </div>
                             </div>
                         </div>
                     )}
 
-                    {errorMsg && (
-                        <div className="absolute top-32 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--brand-primary)] to-[#cc0055] text-white px-12 py-6 rounded-3xl font-black text-3xl shadow-[0_20px_60px_rgba(255,0,122,0.9)] z-[300] flex items-center gap-6 pop-in border-4 border-white text-center">
-                            <AlertCircle size={50} className="shrink-0 animate-pulse" strokeWidth={3} />
-                            {errorMsg}
+                    {showWarning && (
+                        <div className="absolute top-32 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--brand-orange)] to-[#cc4400] text-white w-11/12 md:w-auto px-6 py-4 md:px-12 md:py-6 rounded-2xl md:rounded-3xl font-black text-lg md:text-2xl shadow-[0_20px_60px_rgba(255,85,0,0.9)] z-[300] flex flex-col md:flex-row items-center justify-center gap-4 pop-in border-2 md:border-4 border-white text-center">
+                            <AlertCircle size={40} className="shrink-0 animate-pulse md:w-[40px] md:h-[40px]" strokeWidth={3} />
+                            {showWarning}
                         </div>
                     )}
 
-                    <div className="flex-grow relative overflow-hidden flex items-center justify-center w-full z-10">
+                    {showError && (
+                        <div className="absolute inset-0 bg-[#0B0E14]/80 backdrop-blur-sm z-[300] flex items-center justify-center p-4 pop-in">
+                            <div className="bg-slate-900 p-8 md:p-12 rounded-[2rem] border-4 border-[var(--brand-primary)] shadow-[0_0_50px_rgba(255,0,122,0.6)] flex flex-col items-center text-center max-w-xl w-full relative">
+                                <div className="w-16 h-16 md:w-20 md:h-20 bg-[var(--brand-primary)] rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(255,0,122,0.8)]">
+                                    <AlertCircle size={40} className="text-white md:w-[50px] md:h-[50px]" strokeWidth={3} />
+                                </div>
+                                <h3 className="text-2xl md:text-4xl font-black text-white mb-4">
+                                    {mistakes >= 2 ? "¡Intentos Agotados!" : "¡Casi lo logras!"}
+                                </h3>
+                                <p className="text-lg md:text-2xl text-slate-300 font-bold mb-6 leading-relaxed">
+                                    {showError}
+                                </p>
+                                <div className="bg-[var(--brand-primary)]/20 text-[var(--brand-primary)] font-black text-xl px-6 py-2 rounded-full border border-[var(--brand-primary)] animate-pulse mb-4">
+                                    {mistakes >= 2 ? "¡Te llevas 0 puntos en este nivel!" : "¡Piensa un poco más y vuelve a intentarlo!"}
+                                </div>
+                                <p className="text-slate-400 mt-2 font-bold animate-pulse">
+                                    {mistakes >= 2 ? "Avanzando al siguiente ejercicio..." : "Intenta de nuevo en un momento..."}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {showSuccess && (
+                        <div className="absolute inset-0 bg-[#0B0E14]/80 backdrop-blur-sm z-[300] flex items-center justify-center p-4 pop-in">
+                            <Confetti />
+                            <div className="bg-slate-900 p-8 md:p-12 rounded-[2rem] border-4 border-[#00FF66] shadow-[0_0_50px_rgba(0,255,102,0.6)] flex flex-col items-center text-center max-w-xl w-full relative">
+                                <div className="w-16 h-16 md:w-20 md:h-20 bg-[#00FF66] rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(0,255,102,0.8)]">
+                                    <Check size={40} className="text-slate-900 md:w-[50px] md:h-[50px]" strokeWidth={4} />
+                                </div>
+                                <h3 className="text-2xl md:text-4xl font-black text-white mb-6">{showSuccess}</h3>
+                                <div className="bg-[#FFEA00] text-slate-900 font-black text-xl px-6 py-2 rounded-full shadow-[0_0_15px_rgba(255,234,0,0.5)] mb-4">
+                                    ¡BIEN HECHO!
+                                </div>
+                                <p className="text-[#00FF66] mt-2 font-bold animate-pulse">Avanzando...</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {showMissionComplete && (
+                        <div className="absolute inset-0 bg-[#0B0E14]/80 backdrop-blur-sm z-[400] flex items-center justify-center pop-in p-4">
+                            <Confetti />
+                            <div className="bg-[#1a1f2e] px-8 py-10 md:px-16 md:py-16 rounded-[2rem] md:rounded-[3rem] shadow-[0_0_40px_rgba(0,255,102,0.3)] flex flex-col items-center text-center max-w-md w-full border-4 border-[#00FF66] relative">
+                                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center mb-6 border-[4px] border-[#00FF66] bg-transparent shadow-[0_0_20px_rgba(0,255,102,0.3),inset_0_0_20px_rgba(0,255,102,0.3)]">
+                                    <Check size={50} strokeWidth={4} className="text-[#00FF66] drop-shadow-[0_0_10px_rgba(0,255,102,0.8)] md:w-16 md:h-16" />
+                                </div>
+                                <h2 className="text-4xl md:text-5xl font-black text-white mb-2 drop-shadow-md">¡Misión Superada!</h2>
+                                <p className="text-xl md:text-2xl text-[#00FF66] font-bold mb-6">¡Completaste todos los retos de este nivel!</p>
+                                <p className="text-slate-400 font-bold animate-pulse">Volviendo al menú en un momento...</p>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="flex-grow relative overflow-y-auto md:overflow-hidden flex items-center justify-center w-full z-10 p-2 md:p-0">
                         {view === 'start' && (
-                            <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24 glass-panel p-10 md:p-16 lg:p-24 rounded-[4rem] lg:rounded-[5rem] border-4 border-white/20 shadow-[0_0_120px_rgba(0,0,0,0.8)] pop-in w-11/12 max-w-[1400px] h-auto min-h-[75vh] my-6 bg-gradient-to-br from-slate-900/90 to-slate-800/90">
+                            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-24 glass-panel p-6 md:p-16 lg:p-24 rounded-[3rem] md:rounded-[4rem] lg:rounded-[5rem] border-4 border-white/20 shadow-[0_0_120px_rgba(0,0,0,0.8)] pop-in w-full max-w-[1400px] h-auto min-h-[75vh] my-4 md:my-6 bg-gradient-to-br from-slate-900/90 to-slate-800/90">
                                 
-                                <div className="flex flex-col items-center justify-center relative wiggle">
-                                    <AnimatedRobot size={320} className="drop-shadow-[0_0_60px_rgba(0,240,255,0.8)] z-10" />
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r from-[var(--brand-secondary)] to-[var(--brand-tertiary)] rounded-full blur-[100px] opacity-30 -z-10"></div>
+                                <div className="flex flex-col items-center justify-center relative wiggle mt-8 md:mt-0">
+                                    <AnimatedRobot size={240} className="md:w-[320px] md:h-[320px] drop-shadow-[0_0_60px_rgba(0,240,255,0.8)] z-10" />
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-gradient-to-r from-[var(--brand-secondary)] to-[var(--brand-tertiary)] rounded-full blur-[60px] md:blur-[100px] opacity-30 -z-10"></div>
                                 </div>
 
-                                <div className="flex flex-col items-center justify-center lg:border-l-4 border-white/20 lg:pl-24 text-center">
-                                    <h1 className="text-6xl md:text-8xl lg:text-[110px] font-black text-white leading-tight tracking-tighter neon-text uppercase text-center drop-shadow-[0_0_20px_rgba(255,0,122,0.8)]">
+                                <div className="flex flex-col items-center justify-center lg:border-l-4 border-white/20 lg:pl-24 text-center mt-4 md:mt-0">
+                                    <h1 className="text-5xl md:text-8xl lg:text-[110px] font-black text-white leading-tight tracking-tighter neon-text uppercase text-center drop-shadow-[0_0_20px_rgba(255,0,122,0.8)]">
                                         Aventura de<br/>
-                                        <span className="text-[var(--brand-secondary)] text-7xl md:text-9xl lg:text-[130px] drop-shadow-[0_0_40px_rgba(0,240,255,0.8)]">Fracciones</span>
+                                        <span className="text-[var(--brand-secondary)] text-5xl md:text-9xl lg:text-[130px] drop-shadow-[0_0_40px_rgba(0,240,255,0.8)] mt-2 block md:inline">Fracciones</span>
                                     </h1>
                                     
-                                    <div className="bg-gradient-to-r from-[var(--brand-yellow)] to-[#ffaa00] border-4 border-white rounded-[2rem] px-16 py-6 mt-10 mb-14 shadow-[0_0_40px_rgba(255,234,0,0.6)] transform -rotate-3 hover:rotate-0 transition-transform">
-                                        <p className="text-3xl md:text-5xl font-black text-slate-900 tracking-widest uppercase m-0 drop-shadow-sm text-center leading-tight">
+                                    <div className="bg-gradient-to-r from-[var(--brand-yellow)] to-[#ffaa00] border-2 md:border-4 border-white rounded-xl md:rounded-[2rem] px-8 py-4 md:px-16 md:py-6 mt-8 md:mt-10 mb-8 md:mb-14 shadow-[0_0_40px_rgba(255,234,0,0.6)] transform -rotate-3 hover:rotate-0 transition-transform">
+                                        <p className="text-xl md:text-5xl font-black text-slate-900 tracking-widest uppercase m-0 drop-shadow-sm text-center leading-tight">
                                             ¡Hola Explorador!
                                         </p>
                                     </div>
                                     
-                                    <Button onClick={handleStart} variant="primary" className="text-5xl md:text-6xl px-24 py-10 shadow-[0_0_80px_rgba(255,0,122,0.8)] group border-4 border-white">
-                                        ¡INICIAR! <Rocket size={60} className="group-hover:translate-x-4 group-hover:-translate-y-4 transition-transform" />
+                                    <Button onClick={handleStart} variant="primary" className="text-3xl md:text-6xl px-12 py-6 md:px-24 md:py-10 shadow-[0_0_80px_rgba(255,0,122,0.8)] group border-2 md:border-4 border-white w-full md:w-auto mb-8 md:mb-0">
+                                        ¡INICIAR! <Rocket size={40} className="md:w-[60px] md:h-[60px] group-hover:translate-x-4 group-hover:-translate-y-4 transition-transform" />
                                     </Button>
                                 </div>
                             </div>
@@ -1091,9 +1408,8 @@
                         
                         {view === 'hub' && <MissionHub onSelectBlock={handleSelectBlock} completedBlocks={completedBlocks} />}
                         {view === 'playing' && renderCurrentActivity()}
+                        {view === 'finale' && <FinaleScreen score={calculateScore()} onRestart={handleRestart} />}
                     </div>
-
-                    <SuccessModal isVisible={showCheck} onNext={handleNext} isBlockComplete={currentLevel === 4} />
                 </div>
             );
         }
